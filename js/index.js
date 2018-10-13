@@ -20,7 +20,13 @@ var app = {
 
     },
     handleBackButtonDown: function() {
-        exit()
+        if($("#rulePage").css("display")=="block"){
+            $("#mainbox").show();
+            $("#rulePage").hide();
+            map = new coocaakeymap($(".coocaabtn"), $("#rule"), "btnFocus", function() {}, function(val) {}, function(obj) {});
+        }else{
+            exit()
+        }
     },
 
     onDeviceReady: function() {
@@ -80,11 +86,11 @@ var app = {
                             needQQ = true;
                         }
                     }
-                    hasLogin(needQQ,true);
-
-                    listenUser();
-                    listenPay();
-                    listenCommon();
+                    // hasLogin(needQQ,true);
+                    //
+                    // listenUser();
+                    // listenPay();
+                    // listenCommon();
                 },
                 error: function(error) {
                     console.log("-----------访问失败---------"+JSON.stringify(error));
@@ -137,330 +143,37 @@ function listenCommon() {
 }
 
 function initMap(setFocus) {
+    startmarquee(400, 30, 0, 1); //滚动获奖名单
     initBtn();
     map = new coocaakeymap($(".coocaabtn"), $(setFocus), "btnFocus", function() {}, function(val) {}, function(obj) {});
     $(setFocus).trigger("itemFocus");
-    if(needgotoshop){
-        needgotoshop = false;
-        $("#morecard").trigger("itemClick");
-    }
-
 }
 function initBtn() {
-    $(".city").unbind("itemFocus").bind("itemFocus",function(){
-        $(".city").removeClass("focus");
-        $(this).addClass("focus");
-        $(".citycard").hide();
-        var _thisIndex = $(".city").index($(this));
-        rememberMapFocus = _thisIndex;
-        $(".citycard:eq("+_thisIndex+")").show();
-        map = new coocaakeymap($(".coocaabtn"), $(".citycard:eq("+_thisIndex+") .cityBtn"), "btnFocus", function() {}, function(val) {}, function(obj) {});
-        if(needFresh){
-            needRememberFocus = true;
-            rememberFocus = ".city:eq("+_thisIndex+")";
-            needFresh = false;
-            showPage(false,false);
+    $(".module").unbind("itemFocus").bind("itemFocus",function () {
+        var num = $(".module").index($(this));
+        var x = 0;
+        switch (num)
+        {
+            case 0:case 1:case 2:
+                x="0";
+                break;
+            case 3:case 4:case 5:
+                x="180";
+                break;
+            case 6:case 7:case 8:
+                x="360";
+                break;
+            case 9:case 10:case 11:
+                x="360";
+                break;
         }
+        $("#mainbox").css("transform", "translate3D(0, -" + x + "px, 0)");
     })
 
-    $(".rightBtn").unbind("itemFocus").bind("itemFocus",function(){
-        $(".city").removeClass("focus");
-        // $(".citycard").hide();
-        $(".rightBtn").attr("leftTarget","#city"+rememberMapFocus);
-        console.log("========"+$(this).attr("id"))
-        if(needFresh){
-            needRememberFocus = true;
-            rememberFocus = "#"+$(this).attr('id');
-            needFresh = false;
-            showPage(false,false);
-        }
-    })
-
-    $(".cityBtn").unbind("itemClick").bind("itemClick",function(){
-        if(gameStatus == "wait"){
-            return;
-        }
-        var _thisIndex = $(".cityBtn").index($(this));
-        var thisObj = this;
-        if(remainNum > 0){
-            if($(this).attr("class").indexOf("hasLight") == -1){
-                var landstatus = 0;
-                if(loginstatus == "true"){landstatus = 1;}
-                var activitystatus = 1;
-                if(gameStatus == "wait"){activitystatus = 0}
-                sentLog("nalm_view_card_page_button_onclick",'{"button_name":"1","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-                console.log("未点亮，即将点亮");
-                console.log("用户点击，记录需要点亮的城市卡");
-                $.ajax({
-                    type: "GET",
-                    async: true,
-                    url: adressIp + "/light/u/"+actionId+"/push/city",
-                    data: {id:actionId, MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId,cityKey:"city"+(_thisIndex+1)},
-                    dataType: "jsonp",
-                    jsonp: "callback",
-                    success: function(data) {
-                        console.log("---------------rememberCity----result-----------------------------"+JSON.stringify(data));
-                        if (data.code == 50100) {
-                            //当前是否第一次游戏---是，点亮发放礼品接口
-                            if(totalNum == 0){
-                                lightCityApi(thisObj,_thisIndex,"A001",thisObj.parentNode);
-                            }else{
-                                console.log("有机会，做任务即可点亮");
-                                _listenObj = thisObj;
-                                _listenNum = _thisIndex;
-                                _listenType = "A001";
-                                _listenParent = thisObj.parentNode;
-                                startMission(thisObj);
-                            }
-                        } else {}
-                    },
-                    error: function(error) {
-                        console.log("--------访问失败" + JSON.stringify(error));
-                    }
-                });
-            }else{
-                console.log("已经点亮"+forNum);
-                if(forNum == 15){
-                    needFresh = false;
-                    // $("#gotoLottery").trigger("itemClick");
-                    needFresh = true;
-                    needRememberFocus = true;
-                    rememberFocus = "#gotoLottery";
-                    coocaaosapi.removeUserChanggedListener(function(){});
-                    coocaaosapi.startNewBrowser(drawurl,function(){},function(){});
-                    var landstatus = 0;
-                    if(loginstatus == "true"){landstatus = 1;}
-                    var activitystatus = 1;
-                    if(gameStatus == "wait"){activitystatus = 0}
-                    sentLog("nalm_view_card_page_button_onclick",'{"button_name":"4","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-                }else{
-                    var needGotoNextCity = _thisIndex;
-                    for(var i=0;i<15;i++){
-                        if($("#city"+i).attr("class").indexOf("hasLight") == -1){
-                            needGotoNextCity = i;
-                            break;
-                        }else{}
-                    }
-                    initMap(".city:eq("+needGotoNextCity+")");
-                    var landstatus = 0;
-                    if(loginstatus == "true"){landstatus = 1;}
-                    var activitystatus = 1;
-                    if(gameStatus == "wait"){activitystatus = 0}
-                    sentLog("nalm_view_card_page_button_onclick",'{"button_name":"2","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-                }
-            }
-        }else{
-            if(forNum == 15){
-                needFresh = true;
-                needRememberFocus = true;
-                rememberFocus = "#gotoLottery";
-                var landstatus = 0;
-                if(loginstatus == "true"){landstatus = 1;}
-                var activitystatus = 1;
-                if(gameStatus == "wait"){activitystatus = 0}
-                sentLog("nalm_main_page_button_onclick",'{"button_name":"4","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-                coocaaosapi.removeUserChanggedListener(function(){});
-                coocaaosapi.startNewBrowser2(drawurl,function(){},function(){});
-            }else{
-                console.log("没有机会，需要购买!");
-                // $("#morecard").trigger("itemClick");
-                $("#mainMap").hide();
-                $("#moreChance").show();
-                if(needQQ){
-                    for(var i=1;i<=4;i++){
-                        var name = "pkg"+i;
-                        $(".moviePkg:eq("+(i-1)+") img").attr("src",_tencentPkginfo[name].img);
-                        $(".moviePkg:eq("+(i-1)+")").attr("productid",_tencentPkginfo[name].product_id);
-                        $(".moviePkg:eq("+(i-1)+")").attr("price",_tencentPkginfo[name].price);
-                        $(".moviePkg:eq("+(i-1)+")").attr("type",_tencentPkginfo[name].type);
-                        $(".moviePkg:eq("+(i-1)+")").attr("name",_tencentPkginfo[name].name);
-                    }
-                }else{
-                    for(var i=1;i<=4;i++){
-                        var name = "pkg"+i;
-                        $(".moviePkg:eq("+(i-1)+") img").attr("src",_yinhePkginfo[name].img);
-                        $(".moviePkg:eq("+(i-1)+")").attr("productid",_yinhePkginfo[name].product_id);
-                        $(".moviePkg:eq("+(i-1)+")").attr("price",_yinhePkginfo[name].price);
-                        $(".moviePkg:eq("+(i-1)+")").attr("type",_yinhePkginfo[name].type);
-                        $(".moviePkg:eq("+(i-1)+")").attr("name",_yinhePkginfo[name].name);
-                    }
-                }
-                map = new coocaakeymap($(".coocaabtn2"),null,"btnFocus", function() {}, function(val) {}, function(obj) {});
-                var landstatus = 0;
-                if(loginstatus == "true"){landstatus = 1;}
-                var activitystatus = 1;
-                if(gameStatus == "wait"){activitystatus = 0}
-                sentLog("nalm_view_card_page_button_onclick",'{"button_name":"3","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-                sentLog("web_page_show_new",'{"page_name":"nalm_buy_for_view_card_page","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-            }
-        }
-    })
-
-    $("#strategy").unbind("itemClick").bind("itemClick",function(){
-       $("#mainMap").hide();
-       $("#strategyPage").show();
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        var activitystatus = 1;
-        if(gameStatus == "wait"){activitystatus = 0}
-        sentLog("nalm_main_page_button_onclick",'{"button_name":"money_strategyl","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-        sentLog("web_page_show_new",'{"page_name":"nalm_money_strategy_page","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-        map = new coocaakeymap($(".coocaabtn3"),$("#tips"),"btnFocus", function() {}, function(val) {}, function(obj) {});
-        $("#tips").trigger("itemFocus");
-    })
-    var tab = null;
-    $("#tips").unbind("itemFocus").bind("itemFocus",function(){
-        $("#rulebox").hide();
-        $("#tipsbox").show();
-        tab = "#tips";
-        $("#tips").addClass("focus");
-        $("#rule").removeClass("focus");
-        map = new coocaakeymap($(".coocaabtn3"),$("#tips"),"btnFocus", function() {}, function(val) {}, function(obj) {});
-    })
-
-    $("#rule").unbind("itemFocus").bind("itemFocus",function(){
-        $("#rulebox").show();
-        $("#tipsbox").hide();
-        tab = "#rule";
-        $("#rule").addClass("focus");
-        $("#tips").removeClass("focus");
-        map = new coocaakeymap($(".coocaabtn3"),$("#rule"),"btnFocus", function() {}, function(val) {}, function(obj) {});
-    })
-
-    $(".wordbox").unbind("itemFocus").bind("itemFocus",function(){
-       $(".wordbox").attr("upTarget",tab);
-       $(".wordbox").attr("rightTarget","#rule");
-       $(".wordbox").attr("leftTarget","#tips");
-    })
-
-    $("#gotoLottery").bind("itemFocus",function(){
-        $("#cityNum").css("top","429px");
-    })
-    $("#gotoLottery").bind("itemBlur",function(){
-        $("#cityNum").css("top","427px");
-    })
-    $("#gotoLottery").unbind("itemClick").bind("itemClick",function(){
-        needFresh = true;
-        needRememberFocus = true;
-        rememberFocus = "#gotoLottery";
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        var activitystatus = 1;
-        if(gameStatus == "wait"){activitystatus = 0}
-        sentLog("nalm_main_page_button_onclick",'{"button_name":"draw_lottery","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-        coocaaosapi.removeUserChanggedListener(function(){});
-       coocaaosapi.startNewBrowser2(drawurl,function(){},function(){});
-    })
-    $("#myGift,#myGift2").unbind("itemClick").bind("itemClick",function(){
-        needFresh = true;
-        needRememberFocus = true;
-        rememberFocus = "#myGift";
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        var activitystatus = 1;
-        if(gameStatus == "wait"){activitystatus = 0}else if(gameStatus == "end"){activitystatus = 2}
-        sentLog("nalm_main_page_button_onclick",'{"button_name":"my_award","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-        coocaaosapi.removeUserChanggedListener(function(){});
-       coocaaosapi.startNewBrowser2(awardurl+activitystatus,function(){},function(){});
-    })
-
-    $("#morecard").unbind("itemClick").bind("itemClick",function(){
-       $("#mainMap").hide();
-       $("#moreChance").show();
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        var activitystatus = 1;
-        if(gameStatus == "wait"){activitystatus = 0}
-        if(getUrlParam("goto")!="shop"){
-            sentLog("nalm_main_page_button_onclick",'{"button_name":"more_chance","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-        }
-        sentLog("web_page_show_new",'{"page_name":"nalm_buy_for_view_card_page","activity_status":"'+activitystatus+'","login_status":"'+landstatus+'"}');
-       if(needQQ){
-            for(var i=1;i<=4;i++){
-                var name = "pkg"+i;
-                $(".moviePkg:eq("+(i-1)+") img").attr("src",_tencentPkginfo[name].img);
-                $(".moviePkg:eq("+(i-1)+")").attr("productid",_tencentPkginfo[name].product_id);
-                $(".moviePkg:eq("+(i-1)+")").attr("price",_tencentPkginfo[name].price);
-                $(".moviePkg:eq("+(i-1)+")").attr("type",_tencentPkginfo[name].type);
-                $(".moviePkg:eq("+(i-1)+")").attr("name",_tencentPkginfo[name].name);
-            }
-       }else{
-           for(var i=1;i<=4;i++){
-               var name = "pkg"+i;
-               $(".moviePkg:eq("+(i-1)+") img").attr("src",_yinhePkginfo[name].img);
-               $(".moviePkg:eq("+(i-1)+")").attr("productid",_yinhePkginfo[name].product_id);
-               $(".moviePkg:eq("+(i-1)+")").attr("price",_yinhePkginfo[name].price);
-               $(".moviePkg:eq("+(i-1)+")").attr("type",_yinhePkginfo[name].type);
-               $(".moviePkg:eq("+(i-1)+")").attr("name",_yinhePkginfo[name].name);
-           }
-       }
-        map = new coocaakeymap($(".coocaabtn2"),null,"btnFocus", function() {}, function(val) {}, function(obj) {});
-    })
-
-    $(".moviePkg").unbind("itemClick").bind("itemClick",function(){
-        console.log("loginStatus================="+loginstatus);
-        var pageid = $(this).attr("productid");
-        var pagename = $(this).attr("name");
-        var pagetype = $(this).attr("type");
-        sentLog("nalm_buy_for_view_card_page_content_onclick",'{"module_type":"'+pagetype+'","content_id":"'+pageid+'","content_name":"'+pagename+'"}');
-        if(loginstatus == "true"){
-            var pageid = $(this).attr("productid");
-            var pagename = $(this).attr("name");
-            var pagetype = $(this).attr("type");
-            sentLog("nalm_buy_for_view_card_pay_arouse",'{"module_type":"'+pagetype+'","content_id":"'+pageid+'","content_name":"'+pagename+'"}');
-            order($(this).attr("productid"),$(this).attr("price"));
-        }else{
-            sentLog("nalm_account_landing_page_exposure",'{"page_name":"nalm_buy_for_view_card_page"}');
-            startLogin(needQQ);
-        }
-    })
-
-    $(".qmallPkg").unbind("itemClick").bind("itemClick",function () {
-        var pageid = $(this).attr("pageid");
-        var pagename = $(this).attr("name");
-        var pagetype = $(this).attr("type");
-        sentLog("nalm_buy_for_view_card_page_content_onclick",'{"module_type":"'+pagetype+'","content_id":"'+pageid+'","content_name":"'+pagename+'"}');
-        coocaaosapi.startAppShopDetail(pageid,function(){},function(){});
-    })
-    $("#toastbtn1").unbind("itemClick").bind("itemClick",function () {
-        $("#blackbg").hide();
-        $("#toast2").hide();
-        needFresh = true;
-        needRememberFocus = true;
-        rememberFocus = "#gotoLottery";
-        coocaaosapi.removeUserChanggedListener(function(){});
-        coocaaosapi.startNewBrowser2(drawurl,function(){},function(){});
-    })
-
-    $("#toastbtn2").unbind("itemClick").bind("itemClick",function () {
-        $("#blackbg").hide();
-        $("#toast2").hide();
-        initMap("#city"+rememberMapFocus);
-    })
-
-    $("#moreMovie").unbind("itemClick").bind("itemClick",function () {
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        sentLog("nalm_buy_for_view_card_page_button_onclick",'{"button_name":"0","login_status":"'+landstatus+'"}');
-        if(needQQ){
-            coocaaosapi.startMovieMemberCenter("0","5",function(){exit()},function(){})
-        }else{
-            coocaaosapi.startMovieMemberCenter("0","1",function(){exit()},function(){})
-        }
-    })
-
-    $("#moreEdu").unbind("itemClick").bind("itemClick",function () {
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        sentLog("nalm_buy_for_view_card_page_button_onclick",'{"button_name":"1","login_status":"'+landstatus+'"}');
-        coocaaosapi.startMovieMemberCenter("1","",function(){exit()},function(){})
-    })
-
-    $("#moreMall").unbind("itemClick").bind("itemClick",function () {
-        var landstatus = 0;
-        if(loginstatus == "true"){landstatus = 1;}
-        sentLog("nalm_buy_for_view_card_page_button_onclick",'{"button_name":"2","login_status":"'+landstatus+'"}');
-        coocaaosapi.startHomeCommonList("10168",function(){exit()},function(){})
+    $("#rule").unbind("itemClick").bind("itemClick",function () {
+        $("#mainbox").hide();
+        $("#rulePage").show();
+        map = new coocaakeymap($("#rulePage"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
     })
 }
 
@@ -512,7 +225,30 @@ function order(productid,price) {
     });
 }
 
+//获奖名单滚动效果
+function startmarquee(lh, speed, delay, index) {
+    var t;
+    var p = false;
+    var o = document.getElementById("awardlist");
+    o.innerHTML += o.innerHTML;
+    o.scrollTop = 0;
 
+    function start() {
+        t = setInterval(scrolling, speed);
+        if (!p) { o.scrollTop += 1; }
+    }
+
+    function scrolling() {
+        if (o.scrollTop % lh != 0) {
+            o.scrollTop += 1;
+            if (o.scrollTop >= o.scrollHeight / 2) o.scrollTop = 0;
+        } else {
+            clearInterval(t);
+            setTimeout(start, delay);
+        }
+    }
+    setTimeout(start, delay);
+}
 
 
 
