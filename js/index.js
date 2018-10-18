@@ -24,6 +24,10 @@ var app = {
             $("#mainbox").show();
             $("#rulePage").hide();
             map = new coocaakeymap($(".coocaabtn"), $("#rule"), "btnFocus", function() {}, function(val) {}, function(obj) {});
+        }else if($("#freePage").css("display")=="block"){
+            $("#mainbox").show();
+            $("#freePage").hide();
+            map = new coocaakeymap($(".coocaabtn"), $("#freeList"), "btnFocus", function() {}, function(val) {}, function(obj) {});
         }else{
             exit()
         }
@@ -46,6 +50,10 @@ var app = {
         /*receivedElement.setAttribute('style', 'display:block;');*/
 
         console.log('Received Event: ' + id);
+        if(gameVersion<30400033){
+            appDown.listenApp();
+            appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20180206/20180206103450797932.apk", "98B59D6C52B8BFEA17D250D5D9FF3F1D", "优选购物", "com.coocaa.mall", "26040", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+        }
         coocaaosapi.getDeviceInfo(function(message) {
             deviceInfo = message;
             if (deviceInfo.version < '6') {
@@ -71,12 +79,11 @@ var app = {
             var a ={MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId,cSize:message.panel,cChannel:"coocaa"};
             console.log("data====="+JSON.stringify(a))
             $.ajax({
-                type: "get",
+                type: "post",
                 async: true,
                 url: adressIp + "/light/active/tv/source",
                 data: {MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId,cSize:message.panel,cChannel:"coocaa",aSdk:message.androidsdk,cTcVersion:message.version.replace(/\.*/g,""),cBrand:message.brand},
-                dataType: "jsonp",
-                jsonp: "callback",
+                dataType: "json",
                 // timeout: 20000,
                 success: function(data) {
                     console.log("返回状态：" + JSON.stringify(data));
@@ -86,8 +93,8 @@ var app = {
                             needQQ = true;
                         }
                     }
-                    // hasLogin(needQQ,true);
-                    //
+                    hasLogin(needQQ,true);
+
                     // listenUser();
                     // listenPay();
                     // listenCommon();
@@ -109,6 +116,61 @@ app.initialize();
 
 function exit() {
     navigator.app.exitApp();
+}
+var appDown = {
+    //移除监听
+    removeApklisten: function() {
+        coocaaosapi.removeAppTaskListener(function(message){});
+    },
+    //监听下载状态
+    listenApp:function(){
+        coocaaosapi.addAppTaskListener(function(message) {
+            console.log("msg.status ==" + message.status + "======url======" + message.url + "=========num=====" + showprogress);
+            if (message.status == "ON_DOWNLOADING") {
+                if (showprogress != message.progress) {
+                    showprogress = message.progress;
+                }
+            }
+            else if (message.status == "ON_COMPLETE") {
+                waitApkInstallFunc =  setTimeout('appDown.downFail()', 120000);
+            } else if (message.status == "ON_STOPPED") {
+                appDown.downFail()
+            } else if (message.status == "ON_REMOVED"&& message.url == "http://apk.sky.fs.skysrt.com/uploads/20180206/20180206103450797932.apk") {
+                clearTimeout(waitApkInstallFunc);
+                var a = '{ "pkgList": ["com.coocaa.mall"] }'
+                coocaaosapi.getAppInfo(a, function(message) {
+                    console.log("getAppInfo====" + message);
+                    var b = "com.coocaa.mall";
+                    gameVersion = JSON.parse(message)[b].versionCode;
+                }, function(error) {
+                    console.log("getAppInfo----error" + JSON.stringify(error))
+                });
+                appDown.removeApklisten();
+            }
+        });
+    },
+
+    //下载安装失败
+    downFail: function() {
+        downToast = "模块加载失败，正在重试...";
+        downGameFalse = true;
+        clearTimeout(waitApkInstallFunc);
+        appDown.removeApklisten();
+    },
+
+    //下载安装apk
+    createDownloadTask: function(apkurl, md5, title, pkgname, appid, iconurl) {
+        coocaaosapi.createDownloadTask(
+            apkurl, md5, title, pkgname, appid, iconurl,
+            function(message) {
+               downToast = "模块加载中，请稍后...";
+            },
+            function(error) {
+                console.log(error);
+                console.log("调用失败");
+            }
+        )
+    },
 }
 
 //监听账户状态变化
@@ -143,8 +205,8 @@ function listenCommon() {
 }
 
 function initMap(setFocus) {
-    startmarquee(400, 30, 0, 1); //滚动获奖名单
     initBtn();
+    showAwardlist();
     map = new coocaakeymap($(".coocaabtn"), $(setFocus), "btnFocus", function() {}, function(val) {}, function(obj) {});
     $(setFocus).trigger("itemFocus");
 }
@@ -155,25 +217,54 @@ function initBtn() {
         switch (num)
         {
             case 0:case 1:case 2:
-                x="0";
+                x="270";
                 break;
             case 3:case 4:case 5:
-                x="180";
+                x="540";
                 break;
             case 6:case 7:case 8:
-                x="360";
+                x="810";
                 break;
             case 9:case 10:case 11:
-                x="360";
+                if(gameStatus == "start"){
+                    x="1100"
+                }else{x="920";}
                 break;
         }
         $("#mainbox").css("transform", "translate3D(0, -" + x + "px, 0)");
+    })
+    $(".module").unbind("itemBlur").bind("itemBlur",function () {
+        $("#mainbox").css("transform", "translate3D(0, -" + 0 + "px, 0)");
     })
 
     $("#rule").unbind("itemClick").bind("itemClick",function () {
         $("#mainbox").hide();
         $("#rulePage").show();
         map = new coocaakeymap($("#rulePage"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
+    })
+
+    $("#freeList").unbind("itemClick").bind("itemClick",function () {
+        $("#mainbox").hide();
+        $("#freePage").show();
+        map = new coocaakeymap($("#freePage"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
+    })
+
+    $("#gameing").unbind("itemClick").bind("itemClick",function () {
+        console.log("++++++++++"+gameVersion);
+        if(gameVersion < 30400033){
+            console.log("+++++++++++++++++"+downToast);
+            $("#msgToast").html("&nbsp&nbsp&nbsp"+downToast+"&nbsp&nbsp&nbsp");
+            $("#msgToastBox").show();
+            setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
+            if(downGameFalse){
+                downGameFalse = false;
+                appDown.listenApp();
+                appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20180206/20180206103450797932.apk", "98B59D6C52B8BFEA17D250D5D9FF3F1D", "优选购物", "com.coocaa.mall", "26040", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+            }
+        }else{
+            console.log("+++++++++++已安装最新版游戏");
+            //判断是否在游戏期内；是否还有游戏机会；
+        }
     })
 }
 
@@ -225,32 +316,18 @@ function order(productid,price) {
     });
 }
 
-//获奖名单滚动效果
-function startmarquee(lh, speed, delay, index) {
-    var t;
-    var p = false;
-    var o = document.getElementById("awardlist");
-    o.innerHTML += o.innerHTML;
-    o.scrollTop = 0;
-
-    function start() {
-        t = setInterval(scrolling, speed);
-        if (!p) { o.scrollTop += 1; }
+function showAwardlist() {
+    var boxHeight = $("#awardlist").height();
+    var listHeight = $("#awardul").height();
+    var screenNum = Math.ceil(listHeight/boxHeight);
+    var a=1;
+    setInterval(marquee,3000);
+    function marquee() {
+        $("#awardul").css("transform", "translate3D(0, -" + a * boxHeight + "px, 0)");
+        a++;
+        if(a==screenNum){a=0}
     }
-
-    function scrolling() {
-        if (o.scrollTop % lh != 0) {
-            o.scrollTop += 1;
-            if (o.scrollTop >= o.scrollHeight / 2) o.scrollTop = 0;
-        } else {
-            clearInterval(t);
-            setTimeout(start, delay);
-        }
-    }
-    setTimeout(start, delay);
 }
-
-
 
 function startMission(obj) {
     if($(obj).attr("missionType") == "page"){
@@ -268,105 +345,167 @@ function startMission(obj) {
     }
 }
 
-function initGameStatus() {
-    console.log("has Light city=="+lightCity);
-    $("#strategy").attr("upTarget","");
-    $("#myGift").attr("upTarget","");
-    $("#myGift").attr("upTarget","");
-    if(gameStatus == "end"){
-        $("#mainMap").hide();
-        $("#endPage").show();
-        $("#myGift2").show();
-        initBtn();
-        map = new coocaakeymap($("#myGift2"), $("#myGift2"), "btnFocus", function() {}, function(val) {}, function(obj) {});
-    }else{
-        $("#mainMap").show();
-        $("#lefttips").show();
-        $("#endPage").hide();
-        for(var i=0; i<15; i++){
-            $("#city"+i).removeClass("hasLight");
-            $("#cityCard"+i+" .cityBtn").html("我要点亮");
-            $("#cityCard"+i+" .cityBtn").attr("leftTarget","#city"+i);
-            $("#cityCard"+i+" .cityWord").html("<span class='word1'><b>欢迎来到</b></span><br>"+_powerData["city"+(i+1)].name);
-            if(lightCity.indexOf("city"+i) != -1){
-                forNum += 1 ;
-                console.log("---------"+i);
-                $("#city"+i).addClass("hasLight");
-                $("#cityCard"+i+" .cityBtn").addClass("hasLight");
-                $("#cityCard"+i+" .cityBtn").html("继续点亮");
-                $("#cityCard"+(i)+" .cityImg img").attr("src",_powerData["city"+(i+1)].lightimg);
-                if(cityNum<3){
-                    $("#cityCard"+i+" .cardTitle").html("累计点亮3张");
-                    $("#cityCard"+i+" .cityBottom").html("<span class='lightmoney'>有机会领1000元现金！</span>");
-                }else if(cityNum>=7){
-                    $("#cityCard"+i+" .cardTitle").html("累计点亮15张");
-                    $("#cityCard"+i+" .cityBottom").html("<span class='lightmoney'>有机会领10000元现金！</span>");
+function startOperate(obj) {
+    var startType = $(obj).attr("missionType");
+    switch (startType)
+    {
+        case 1://影视详情页
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startMovieDetail(pageid,function(){},function(){});
+            break;
+        case 2://商品图文详情页
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startAppShopDetail(pageid,function(){},function(){});
+            break;
+        case 3://商品视频详情页
+            var pageid = $(obj).attr("pageid");
+            var pageurl = $(obj).attr("pageurl");
+            var pagename = $(obj).attr("pagename");
+            coocaaosapi.startAppShopVideo(pageid,pageurl,pagename,function(){},function(){});
+            break;
+        case 4://应用
+            var pageid = $(obj).attr("pageid");
+            var pkgname = $(obj).attr("pkgname");
+            var a = '{ "pkgList": ["'+pkgname+'"] }';
+            coocaaosapi.getAppInfo(a, function(message) {
+                console.log("getAppInfo====" + message);
+                if(JSON.parse(message)[pkgname].status == -1){
+                    coocaaosapi.startAppStoreDetail(pageid,function(){},function(){});
                 }else{
-                    $("#cityCard"+i+" .cardTitle").html("累计点亮7张");
-                    $("#cityCard"+i+" .cityBottom").html("<span class='lightmoney'>有机会领5000元现金！</span>");
+                    coocaaosapi.startByPackName(pkgname,function(){},function(){});
                 }
+            }, function(error) {
+                console.log("getAppInfo----error" + JSON.stringify(error));
+                coocaaosapi.startByPackName(pkgname,function(){},function(){});
+            });
+            break;
+        case 5://普通专题
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startMovieHomeSpecialTopic(pageid,function(){},function(){});
+            break;
+        case 6://轮播专题
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startVideospecial(pageid,function(){},function(){});
+            break;
+        case 7://商品专题
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startAppShopDetail(pageid,function(){},function(){});
+            break;
+        case 8://商品版面
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startAppShopDetail(pageid,function(){},function(){});
+            break;
+        case 9://产品包页面
+            var pageid = $(obj).attr("pageid");
+            coocaaosapi.startAppShopDetail(pageid,function(){},function(){});
+            break;
+    }
+}
 
-            }else{
-                $("#cityCard"+(i)+" .cityImg img").attr("src",_powerData["city"+(i+1)].img);
-                if(needRememberFocus){
-                    setFocusFirst = true;
-                    needRememberFocus = false;
-                    initMap(rememberFocus);
+function initGameStatus() {
+    if(actionStatus == "end"){
+
+    }else if(actionStatus == "start"){
+        if(timePart.ifStart){
+            gameStatus = "start";
+            beginTime = new Date(timePart.beginTime).getHours();
+            endTime = new Date(timePart.endTime).getHours();
+            $("#gameing .gametime").html("本场游戏时间："+beginTime+":00--"+endTime+":00");
+            $("#startbtn span").html(gameResult.chance);
+            $(".todayscore").html(gameResult.todayMaxScore);
+            if(loginstatus == "true"){
+                $(".todaylistnum").show();
+                if(gameResult.userRanking > 100){
+                    $(".todaylistnum").html(gameResult.userRanking)
                 }else{
-                    if(!setFocusFirst){
-                        setFocusFirst = true;
-                        initMap(".city:eq("+i+")");
-                    }else{
-
-                    }
+                    $(".todaylistnum").html("100+")
                 }
             }
-        }
-        if(remainNum == 0){
-            $(".cityBtn").html("更多景点卡");
-            $(".cardTitle").html("今日点亮机会已用完");
-            $(".cityBottom").html("<span class='nochancename'>快获得更多机会，冲刺万元现金大奖！</span>");
-        }
-
-        if(totalNum == 0){
-            $(".cityBtn").html("我要点亮");
-            $(".cardTitle").html("点亮景点可领现金/实物奖励");
-            $(".cityBottom").html("<span class='immediatelyname'>累计点亮3张还有机会赢1000元大奖！</span>");
-        }
-        if(forNum == 15){
-            $(".cardTitle").html("即刻抽取万元现金");
-            $(".cityBottom").html("<span class='finishlightname'>获得赢取10000元现金的机会！</span>");
-            $(".cityBtn").html("抽万元现金");
-            initMap("#city0");
-            initMap("#gotoLottery");
-        }
-        if(needShowWindow){
-            needShowWindow = false;
-            $("#blackbg").show();
-            $("#toast2").show();
-            $("#nowhave").html(cityNum);
-            map = new coocaakeymap($(".toastbtn"),null,"btnFocus", function() {}, function(val) {}, function(obj) {});
-        }
-        if(gameStatus == "wait"){
-            $("#gotoLottery").hide();
-            $("#morecard").hide();
-            $("#myGift").hide();
-            $("#cityNum").hide();
-            $("#remainNum").hide();
-            $("#strategy").show();
-            $("#strategy").attr("upTarget","#strategy");
-            $(".cityBtn").html("29日0点开启");
-            $(".cardTitle").html("点亮景点可领现金/实物奖励");
-            $(".cityBottom").html("<span class='finishlightname'>活动即将开启，敬请期待~</span>");
-            $("#mainMap").css("background","url('http://sky.fs.skysrt.com/statics/webvip/webapp/national/mainMap/waitbg.jpg')")
         }else{
-            $("#gotoLottery").show();
-            $("#morecard").show();
-            $("#myGift").show();
-            $("#strategy").show();
-            $(".cityBtn").attr("rightTarget","#gotoLottery");
+            gameStatus = "wait";
+            $("#waitOvertimes span").html(gameResult.chance);
+            $("#waitBest span").html(gameResult.todayMaxScore);
+            if(loginstatus == "true"){
+                $("#waitTop").show();
+                if(gameResult.userRanking > 100){
+                    $("#waitTop span").html(gameResult.userRanking)
+                }else{
+                    $("#waitTop span").html("100+")
+                }
+            }
+            beginTime = new Date(timePart.nextTimePart.beginTime).getHours();
+            endTime = new Date(timePart.nextTimePart.endTime).getHours();
+            if(timePart.ifNextDay){
+                $("#waitgame .gametime").html("下一场游戏时间：明天"+beginTime+":00--"+endTime+":00");
+            }else{
+                $("#waitgame .gametime").html("下一场游戏时间："+beginTime+":00--"+endTime+":00");
+            }
         }
+    }else{
+
     }
+
+    $.ajax({
+        type: "get",
+        async: true,
+        url: adressIp + "/light/task/"+actionId+"/banner",
+        data: {id:actionId,source:movieSource},
+        dataType: "json",
+        success: function(data) {
+            console.log("------------getBanner----result-------------"+JSON.stringify(data));
+            if (data.code == 50100) {
+                apkBanner = data.data.apkBanner;
+                eduBanner = data.data.eduBanner;
+                tvMallBanner = data.data.tvMallBanner;
+                movieBanner = data.data.movieBanner;
+                var pagefrom = getUrlParam("from");
+                switch (pagefrom){
+                    case "edu":
+                        arrBanner.push(eduBanner);
+                        arrBanner.push(movieBanner);
+                        arrBanner.push(tvMallBanner);
+                        arrBanner.push(apkBanner);
+                        break;
+                    case "mall":
+                        arrBanner.push(tvMallBanner);
+                        arrBanner.push(movieBanner);
+                        arrBanner.push(eduBanner);
+                        arrBanner.push(apkBanner);
+                        break;
+                    case "apk":
+                        arrBanner.push(apkBanner);
+                        arrBanner.push(movieBanner);
+                        arrBanner.push(eduBanner);
+                        arrBanner.push(tvMallBanner);
+                        break;
+                    default :
+                        arrBanner.push(movieBanner);
+                        arrBanner.push(eduBanner);
+                        arrBanner.push(tvMallBanner);
+                        arrBanner.push(apkBanner);
+                        break;
+                }
+                for(var i=0;i<4;i++){
+                    var bannerBox = document.getElementById("list"+(i+1));
+                    for (var j=1;j<=3;j++){
+                        var bannerDiv = document.createElement("div");
+                        var bannerImg = document.createElement("img");
+                        var bannerCouponDiv = document.createElement("div");
+                        bannerDiv.setAttribute('id', 'bgDiv' + i);
+                        bannerDiv.setAttribute('class', 'bgDiv');
+                        bannerDiv.appendChild(bannerImg);
+                        bannerDiv.appendChild(bannerCouponDiv);
+                        bannerBox.appendChild(bannerDiv);
+                    }
+                }
+            } else{
+
+            }
+        },
+        error: function(error) {
+            console.log("--------运营位访问失败" + JSON.stringify(error));
+        }
+    });
 }
 
 //页面初始化或刷新
@@ -377,81 +516,27 @@ function showPage(first,resume) {
             needgotoshop = true;
             exitWeb = true;
         }
-    }else if(resume){
-        initType = "all";
-    }else{
-        initType = "no";
     }
-    setFocusFirst = false;
-    forNum = 0;
-    lightCity = [];
-    $(".cityBtn").removeClass("hasLight");
-    console.log("---"+macAddress+"------"+TVchip+"-----"+TVmodel+"------"+emmcId+"--------"+activityId + "---------"+initType+"-------"+cOpenId);
+    console.log("---"+macAddress+"------"+TVchip+"-----"+TVmodel+"------"+emmcId+"--------"+activityId + "---------"+access_token+"-------"+cOpenId);
     $.ajax({
-        type: "GET",
+        type: "post",
         async: true,
-        url: adressIp + "/light/active/"+actionId+"/init",
-        data: {id:actionId, MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId,initType:initType,cOpenId:cOpenId,source:movieSource},
-        dataType: "jsonp",
-        jsonp: "callback",
+        url: adressIp + "/light/eleven/init",
+        data: {activeId:actionId, MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId,accessToken:access_token,cOpenId:cOpenId,source:movieSource},
+        dataType: "json",
         success: function(data) {
             console.log("------------init----result-------------"+JSON.stringify(data));
             if (data.code == 50100) {
-                cityNum = data.data.userLightCity.lightNumber;
-                totalNum = data.data.userChance.allOperation;
-                remainNum = data.data.userChance.overNumber;
-                nowTime = data.data.sysTime;
-                beginTime = data.data.active.activeBeginTime;
-                endTime = data.data.active.activeEndTime;
-                giveCard = data.data.lightByDay;
-                if(giveCard != undefined){
-                    if(giveCard.lightNumber > 0){
-                        needShowWindow = true;
-                    }
-                }
-                if(nowTime > beginTime && nowTime < endTime){
-                    gameStatus = "start";
-                    if(first && getUrlParam("goto")!="shop"){
-                        var landstatus = 0;
-                        if(loginstatus == "true"){landstatus = 1;}
-                        sentLog("web_page_show_new",'{"page_name":"nalm_main_activity_page","activity_status":"1","login_status":"'+landstatus+'"}')
-                    }
-                }
-                for(var i=1;i<=15;i++){
-                    var checkCity = "city"+i;
-                    if(data.data.userLightCity.cityInfo[checkCity]!=undefined){
-                        lightCity.push("city"+(i-1));
-                    }
-                    $("#cityCard"+(i-1)+" .cityBtn").attr("missionType",data.data.cityTask[checkCity].type);
-                    $("#cityCard"+(i-1)+" .cityBtn").attr("missionId",data.data.cityTask[checkCity].id);
-                    $("#cityCard"+(i-1)+" .cityBtn").attr("missionUrl",data.data.cityTask[checkCity].url);
-                    $("#cityCard"+(i-1)+" .cityBottom").html("<span class='missionName' style='font-weight: bold'>"+data.data.cityTask[checkCity].name+"</span>");
-                    if(data.data.cityTask[checkCity].type == "video"){
-                        $("#cityCard"+(i-1)+" .cardTitle").html("点亮景点可领现金/实物奖励");
-                    }else{
-                        $("#cityCard"+(i-1)+" .cardTitle").html("点亮景点可领现金/实物奖励");
-                    }
-                }
+                actionStatus = "start";
+                gameResult = data.data.gameResult;
+                timePart = data.data.timePart;
+                countDay = data.data.countDay;
             } else if(data.code == 50002){
-                gameStatus = "wait";
-                if(first && getUrlParam("goto")!="shop"){
-                    var landstatus = 0;
-                    if(loginstatus == "true"){landstatus = 1;}
-                    sentLog("web_page_show_new",'{"page_name":"nalm_main_activity_page","activity_status":"0","login_status":"'+landstatus+'"}')
-                }
-            // }else if(data.code == 50003){
+                actionStatus = "wait";
             }else{
-                gameStatus = "end";
-                if(first && getUrlParam("goto")!="shop"){
-                    var landstatus = 0;
-                    if(loginstatus == "true"){landstatus = 1;}
-                    sentLog("web_page_show_new",'{"page_name":"nalm_main_activity_page","activity_status":"2","login_status":"'+landstatus+'"}')
-                }
+                actionStatus = "end";
             }
-
             initGameStatus();
-            $("#cityNum").html(cityNum);
-            $("#remainNum").html(remainNum);
         },
         error: function(error) {
             console.log("--------访问失败" + JSON.stringify(error));

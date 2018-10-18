@@ -15,6 +15,7 @@
     <div id="deviceready">
         <div id="mainbox">
             <div id="maintop">
+                <div id="toplog"></div>
                 <div id="myaward" class="topbtn coocaabtn">我的红包</div>
                 <div id="rule" class="topbtn coocaabtn">活动介绍</div>
             </div>
@@ -22,25 +23,25 @@
                 <div id="waitgame" class="gamebox coocaabtn">
                     <div class="gametime">本场游戏参与时间：14:00--16:00</div>
                     <div id="waitInfo">
-                        <div id="waitOvertimes">剩余游戏次数：2次</div>
-                        <div id="waitBest">今日最好成绩：123个</div>
+                        <div id="waitOvertimes">剩余游戏机会：<span></span></div>
+                        <div id="waitBest">今日最高成绩：<span></span></div>
                         <div id="waitTop">当前排名：100+</div>
                     </div>
                 </div>
                 <div id="gameing" class="gamebox coocaabtn">
                     <div class="gametime">本场游戏参与时间：14:00--16:00</div>
-                    <div id="todayrecord">您今天抢红包最好成绩是124个 排名100+</div>
-                    <div id="todaymarquee"></div>
-                    <div id="startbtn">按确定开始游戏，剩余2次机会</div>
+                    <div id="todayrecord">今日最高成绩：<span class="todayscore"></span> <span class="todaylistnum"></span></div>
+                    <div id="todaymarquee">sdadasdasdasd,asdasdasdas</div>
+                    <div id="startbtn">按确定开始游戏，剩余<span></span>次机会</div>
                 </div>
                 <div id="menu">
                     <div id="missionbox" class="secondBox">
-                        完成以下任务可以获得更多抢红包游戏机会<br>
-                        <div class="menubox coocaabtn">任务一</div>
-                        <div class="menubox coocaabtn">任务二</div>
+                        <div class="title">完成以下任务可以获得更多抢红包游戏机会</div>
+                        <div class="menubox coocaabtn" id="mission1">任务一</div>
+                        <div class="menubox coocaabtn" id="mission2">任务二</div>
                     </div>
                     <div id="listbox" class="secondBox">
-                        游戏top10|免单榜<br>
+                        <div class="title">游戏top10|免单榜</div>
                         <div class="menubox coocaabtn" id="awardlist">
                             <ul id="awardul">
                                 <li>this  is   test  account  1</li>
@@ -53,66 +54,97 @@
                                 <li>this  is   test  account  8</li>
                                 <li>this  is   test  account  9</li>
                                 <li>this  is   test  account  10</li>
+                                <li>this  is   test  account  11</li>
+                                <li>this  is   test  account  12</li>
+                                <li>this  is   test  account  13</li>
+                                <li>this  is   test  account  14</li>
+                                <li>this  is   test  account  15</li>
+                                <li>this  is   test  account  16</li>
+                                <li>this  is   test  account  17</li>
+                                <li>this  is   test  account  18</li>
+                                <li>this  is   test  account  19</li>
+                                <li>this  is   test  account  20</li>
                             </ul>
                         </div>
                     </div>
                     <div id="freebox" class="secondBox">
-                        免单专区<br>
-                        <div class="menubox coocaabtn">s</div>
+                        <div class="title">免单专区</div>
+                        <div class="menubox coocaabtn" id="freeList">s</div>
                     </div>
 
                 </div>
                 <div id="mainlist">
                     <div id="list1" class="listbox">
-                        <div class="module1 coocaabtn module">
+                        <div class="module1 coocaabtn module" id="tt1">
+                            <img>
                             <div class="coupon">减50元优惠券可使用</div>
                         </div>
-                        <div class="module2 coocaabtn module">
+                        <div class="module2 coocaabtn module" id="tt2">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
-                        <div class="module3 coocaabtn module">
+                        <div class="module3 coocaabtn module" id="tt3">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                     </div>
                     <div id="list2" class="listbox">
                         <div class="module1 coocaabtn module">
+                            <img>
                             <div class="coupon">减50元优惠券可使用</div>
                         </div>
                         <div class="module2 coocaabtn module">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                         <div class="module3 coocaabtn module">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                     </div>
                     <div id="list3" class="listbox">
                         <div class="module1 coocaabtn module">
+                            <img>
                             <div class="coupon">减50元优惠券可使用</div>
                         </div>
                         <div class="module2 coocaabtn module">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                         <div class="module3 coocaabtn module">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                     </div>
                     <div id="list4" class="listbox">
                         <div class="module1 coocaabtn module">
+                            <img>
                             <div class="coupon">减50元优惠券可使用</div>
                         </div>
                         <div class="module2 coocaabtn module">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                         <div class="module3 coocaabtn module">
+                            <img>
                             <div class="coupon">&nbsp</div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div id="opacityBg1"></div>
+            <div id="opacityBg2"></div>
+
         </div>
         <div id="rulePage">
             这是一个活动介绍页面~~~~~~~~~~~~~~~~~~~~
         </div>
+        <div id="freePage">
+            这是一个免单专区页面~~~~~~~~~~~~~~~~~~~~
+        </div>
+        <div id="msgToastBox" style="display: none"><span id="msgToast"></span></div>
+
     </div>
     <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="js/data.js"></script>
