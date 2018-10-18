@@ -33,6 +33,7 @@ var gameStatus = "start";
 var countDay = 0;//活动开始的第几天
 var timePart = null;//活动的时段信息
 var gameResult = null;//用户排名信息
+var gameChance = 0 ;
 var beginTime = null;
 var endTime = null;
 
@@ -41,6 +42,7 @@ var tvMallBanner = null;
 var eduBanner = null;
 var apkBanner = null;
 var arrBanner = [];
+var bannerNanme = [];
 
 var adressIp = "http://beta.restful.lottery.coocaatv.com";
 // var adressIp = "https://restful.skysrt.com";

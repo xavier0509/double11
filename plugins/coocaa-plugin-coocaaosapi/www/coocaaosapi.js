@@ -40,6 +40,14 @@ cordova.define("coocaaosapi", function(require, exports, module) {
             accountVersion = message.versionCode
         }, function(message) {});
 
+        startapp.check("com.coocaa.mall", function(message) { /* success */
+            console.log("游戏版本："+JSON.stringify(message));
+            gameVersion = message.versionCode
+        },function (message) {
+            console.log("游戏版本不存在："+JSON.stringify(message));
+            gameVersion = 0;
+        });
+
         startapp.check("com.tianci.movieplatform", function(message) { /* success */
             console.log("影视应用版本：" + JSON.stringify(message));
             cAppVersion = message.versionCode
@@ -194,9 +202,9 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         }, error);
     }
     //包名方式启动
-    CoocaaOSApi.prototype.startUserSettingAndFinish4 = function(success, error) {
-        argscheck.checkArgs('ff', 'CoocaaOSApi.startUserSettingAndFinish', arguments);
-        startapp.start("com.coocaa.mall", success, error);
+    CoocaaOSApi.prototype.startByPackName = function(pkgname,success, error) {
+        argscheck.checkArgs('sff', 'CoocaaOSApi.startUserSettingAndFinish', arguments);
+        startapp.start(pkgname, success, error);
     }
 
     /*
@@ -298,8 +306,8 @@ cordova.define("coocaaosapi", function(require, exports, module) {
     /*
      * 轮播专题
      */
-    CoocaaOSApi.prototype.startVideospecial = function(param,detailid, success, error) {
-        argscheck.checkArgs('ssff', 'CoocaaOSApi.startVideospecial', arguments);
+    CoocaaOSApi.prototype.startVideospecial = function(detailid, success, error) {
+        argscheck.checkArgs('sff', 'CoocaaOSApi.startVideospecial', arguments);
         startapp.start([
             ["action", "coocaa.intent.movie.videospecial"],
             [{

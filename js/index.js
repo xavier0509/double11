@@ -209,6 +209,10 @@ function initMap(setFocus) {
     showAwardlist();
     map = new coocaakeymap($(".coocaabtn"), $(setFocus), "btnFocus", function() {}, function(val) {}, function(obj) {});
     $(setFocus).trigger("itemFocus");
+    if(needgotoshop){
+        needgotoshop = false;
+        $("#freeList").trigger("itemClick");
+    }
 }
 function initBtn() {
     $(".module").unbind("itemFocus").bind("itemFocus",function () {
@@ -243,6 +247,10 @@ function initBtn() {
         map = new coocaakeymap($("#rulePage"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
     })
 
+    $("#myaward").unbind("itemClick").bind("itemClick",function () {
+        coocaaosapi.startNewBrowser2(awardurl,function(){},function(){});
+    })
+
     $("#freeList").unbind("itemClick").bind("itemClick",function () {
         $("#mainbox").hide();
         $("#freePage").show();
@@ -264,6 +272,37 @@ function initBtn() {
         }else{
             console.log("+++++++++++已安装最新版游戏");
             //判断是否在游戏期内；是否还有游戏机会；
+            //增加接口，点击时判断是否在游戏期内
+            $.ajax({
+                type: "get",
+                async: true,
+                url: adressIp + "/light/eleven/game-start",
+                data: {activeId:actionId},
+                dataType: "json",
+                success: function(data) {
+                    console.log("------------ifStart----result-------------"+JSON.stringify(data));
+                    if (data.code == 50100) {
+                        if(data.data.ifStart){
+                            if(gameChance > 0){
+                                //todo Start Game------
+                            }else{
+                                //todo show windown for mission or qrcode
+                            }
+                        }else{
+                            $("#msgToast").html("&nbsp&nbsp&nbsp当前不在游戏期内，先去做任务可以获得额外机会哦&nbsp&nbsp&nbsp");
+                            $("#msgToastBox").show();
+                            setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
+                        }
+                    } else{
+                        $("#msgToast").html("&nbsp&nbsp&nbsp当前不在游戏期内，先去做任务可以获得额外机会哦&nbsp&nbsp&nbsp");
+                        $("#msgToastBox").show();
+                        setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
+                    }
+                },
+                error: function(error) {
+                    console.log("--------访问失败" + JSON.stringify(error));
+                }
+            });
         }
     })
 }
@@ -408,6 +447,10 @@ function initGameStatus() {
     }else if(actionStatus == "start"){
         if(timePart.ifStart){
             gameStatus = "start";
+            $("#waitgame").hide();
+            $("#gameing").show();
+            $("#opacityBg1").show();
+            $("#opacityBg2").hide();
             beginTime = new Date(timePart.beginTime).getHours();
             endTime = new Date(timePart.endTime).getHours();
             $("#gameing .gametime").html("本场游戏时间："+beginTime+":00--"+endTime+":00");
@@ -423,6 +466,10 @@ function initGameStatus() {
             }
         }else{
             gameStatus = "wait";
+            $("#waitgame").show();
+            $("#gameing").hide();
+            $("#opacityBg2").show();
+            $("#opacityBg1").hide();
             $("#waitOvertimes span").html(gameResult.chance);
             $("#waitBest span").html(gameResult.todayMaxScore);
             if(loginstatus == "true"){
@@ -454,6 +501,7 @@ function initGameStatus() {
         success: function(data) {
             console.log("------------getBanner----result-------------"+JSON.stringify(data));
             if (data.code == 50100) {
+                $(".listbox").html("");
                 apkBanner = data.data.apkBanner;
                 eduBanner = data.data.eduBanner;
                 tvMallBanner = data.data.tvMallBanner;
@@ -465,34 +513,60 @@ function initGameStatus() {
                         arrBanner.push(movieBanner);
                         arrBanner.push(tvMallBanner);
                         arrBanner.push(apkBanner);
+                        bannerNanme.push("eduBanner");
+                        bannerNanme.push("movieBanner");
+                        bannerNanme.push("tvMallBanner");
+                        bannerNanme.push("apkBanner");
                         break;
                     case "mall":
                         arrBanner.push(tvMallBanner);
                         arrBanner.push(movieBanner);
                         arrBanner.push(eduBanner);
                         arrBanner.push(apkBanner);
+                        bannerNanme.push("tvMallBanner");
+                        bannerNanme.push("eduBanner");
+                        bannerNanme.push("movieBanner");
+                        bannerNanme.push("apkBanner");
                         break;
                     case "apk":
                         arrBanner.push(apkBanner);
                         arrBanner.push(movieBanner);
                         arrBanner.push(eduBanner);
                         arrBanner.push(tvMallBanner);
+                        bannerNanme.push("apkBanner");
+                        bannerNanme.push("eduBanner");
+                        bannerNanme.push("movieBanner");
+                        bannerNanme.push("tvMallBanner");
                         break;
                     default :
                         arrBanner.push(movieBanner);
                         arrBanner.push(eduBanner);
                         arrBanner.push(tvMallBanner);
                         arrBanner.push(apkBanner);
+                        bannerNanme.push("movieBanner");
+                        bannerNanme.push("eduBanner");
+                        bannerNanme.push("tvMallBanner");
+                        bannerNanme.push("apkBanner");
                         break;
                 }
                 for(var i=0;i<4;i++){
                     var bannerBox = document.getElementById("list"+(i+1));
                     for (var j=1;j<=3;j++){
+                        var bannerNum=bannerNanme[i]+""+j;
                         var bannerDiv = document.createElement("div");
                         var bannerImg = document.createElement("img");
                         var bannerCouponDiv = document.createElement("div");
-                        bannerDiv.setAttribute('id', 'bgDiv' + i);
-                        bannerDiv.setAttribute('class', 'bgDiv');
+                        // bannerImg.setAttribute("src",arrBanner[i][bannerNum].imgUrl);
+                        bannerImg.setAttribute("src","http://beta.webapp.skysrt.com/games/webapp/double11/dev/css/t1.jpg");
+                        bannerCouponDiv.setAttribute("class","coupon");
+                        bannerCouponDiv.innerHTML="&nbsp";
+                        bannerDiv.setAttribute('class', 'coocaabtn module module'+j);
+                        bannerDiv.setAttribute('missionType', arrBanner[i][bannerNum].taskType);
+                        bannerDiv.setAttribute('missionName', arrBanner[i][bannerNum].name);
+                        bannerDiv.setAttribute('pageid', arrBanner[i][bannerNum].id);
+                        bannerDiv.setAttribute('missionUrl', arrBanner[i][bannerNum].url);
+                        bannerDiv.setAttribute('missionbusinessType', arrBanner[i][bannerNum].businessType);
+                        bannerDiv.setAttribute('missionpkgname', arrBanner[i][bannerNum].param);
                         bannerDiv.appendChild(bannerImg);
                         bannerDiv.appendChild(bannerCouponDiv);
                         bannerBox.appendChild(bannerDiv);
@@ -500,6 +574,18 @@ function initGameStatus() {
                 }
             } else{
 
+            }
+            if(getUrlParam("from")!=null&&getUrlParam("from")!=undefined){
+                initMap("#list1 .module:eq(0)");
+            }else if(gameStatus == "start"){
+                initMap("#gameing");
+            }else {
+                //判断任务一是否完成
+                if(true){
+                    initMap("#mission2");
+                }else{
+                    initMap("#mission1");
+                }
             }
         },
         error: function(error) {
@@ -510,7 +596,7 @@ function initGameStatus() {
 
 //页面初始化或刷新
 function showPage(first,resume) {
-    console.log("$$$$$$$$$$$$$$$$$$===="+first+"==========="+resume)
+    console.log("$$$$$$$$$$$$$$$$$$===="+first+"==========="+resume);
     if(first){
         if(getUrlParam("goto")=="shop"){
             needgotoshop = true;
@@ -529,6 +615,7 @@ function showPage(first,resume) {
             if (data.code == 50100) {
                 actionStatus = "start";
                 gameResult = data.data.gameResult;
+                gameChance = gameResult.chance;
                 timePart = data.data.timePart;
                 countDay = data.data.countDay;
             } else if(data.code == 50002){
