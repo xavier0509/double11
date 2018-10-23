@@ -12,7 +12,9 @@ function hasLogin(needQQ,fresh) {
             }
             user_flag = 0;
             access_token = "";
-            if(fresh){
+            if(fresh == "ranking"){//=============zy
+                rankingList();
+            } else if(fresh){
                 showPage(true,false);
             }
         } else {
@@ -58,16 +60,24 @@ function hasLogin(needQQ,fresh) {
                                         vuserid = JSON.parse(qqinfo[0].refreshToken).vuserid
                                     }
                                     if (cAppVersion < 3190030) {
+                                        cOpenId = "";
                                         loginstatus = "false";
                                     }
                                 }
-                                if(fresh){
+                                if(fresh == "ranking"){//=============zy
+                                    rankingList();
+                                    needInit = true;
+                                } else if(fresh){
                                     showPage(true,false);
                                 }
                             } else {
                                 tencentWay = "both";
+                                cOpenId = "";
                                 loginstatus = "false";
-                                if(fresh){
+                                if(fresh == "ranking"){//=============zy
+                                    rankingList();
+                                    needInit = true;
+                                } else if(fresh){
                                     showPage(true,false);
                                 }
                             }
@@ -86,6 +96,7 @@ function hasLogin(needQQ,fresh) {
                                             vuserid = JSON.parse(qqinfo[b].refreshToken).vuserid
                                         }
                                         if (cAppVersion < 3190030) {
+                                            cOpenId = "";
                                             loginstatus = "false";
                                             tencentWay = "qq";
                                         }
@@ -94,10 +105,14 @@ function hasLogin(needQQ,fresh) {
                                 }
                                 if (needSelectNum == qqinfo.length) {
                                     tencentWay = "both";
+                                    cOpenId = "";
                                     loginstatus = "false";
                                 }
                             }
-                            if(fresh){
+                            if(fresh == "ranking"){//=============zy
+                                rankingList();
+                                needInit = true;
+                            } else if(fresh){
                                 showPage(true,false);
                             }
                         }
@@ -124,7 +139,10 @@ function hasLogin(needQQ,fresh) {
                             return;
                         }else{
                             showFlag = access_token
-                            if(fresh){
+                            if(fresh == "ranking"){//=============zy
+                                rankingList();
+                                needInit = true;
+                            } else if(fresh){
                                 showPage(true,false);
                             }
                         }

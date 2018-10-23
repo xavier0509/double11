@@ -311,7 +311,7 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         startapp.start([
             ["action", "coocaa.intent.movie.videospecial"],
             [{
-                'pTopicCode': detailid
+                'topicCode': detailid
             }]
         ], success, error);
     }
@@ -1139,6 +1139,20 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         ], success, error);
     }
 
+
+    // 拓展参数[{key1:"value1"},{key2:"value2"}]
+    //用activity方式启动：1,2传参为包名、类名；3、4、5为空；
+    //用其他方式启动，1传参"action",2\3\4\5可选---2action名、5uri地址
+    CoocaaOSApi.prototype.startCommonNormalAction = function(param1,param2,param3,param4,param5, str, success, error) {
+        console.log("启动传参action")
+        argscheck.checkArgs('ssssssff', 'CoocaaOSApi.startCommonNormalAction', arguments);
+        str = JSON.parse(str);
+        startapp.start([
+            [param1,param2,param3,param4,param5], str
+        ], success, error);
+        // startapp.start([["cn.cheerz.icw", "","","","wit://cn.cheerz.icw/MainActivity"],[{"subpage":"1"},{"type":"3"}]], success,error);
+    }
+
     //
     /*web页面判断是否放开上下键需求*/
     CoocaaOSApi.prototype.setSpecialMachine = function(machineList, success, error) {
@@ -1164,6 +1178,14 @@ cordova.define("coocaaosapi", function(require, exports, module) {
     CoocaaOSApi.prototype.startHomeCommonList = function(id,success,error){
         argscheck.checkArgs('sff','CoocaaOSApi.startHomeCommonList',arguments);
         startapp.start([["action", "coocaa.intent.action.HOME_COMMON_LIST"],[{'id':id}]], success,error);
+    }
+
+    /*
+     *启动红包游戏
+     */
+    CoocaaOSApi.prototype.startRedGame = function(success,error){
+        argscheck.checkArgs('ff','CoocaaOSApi.startHomeCommonList',arguments);
+        startapp.start([["action", "android.intent.action.D11"]], success,error);
     }
 
     module.exports = new CoocaaOSApi();

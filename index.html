@@ -16,62 +16,44 @@
         <div id="mainbox">
             <div id="maintop">
                 <div id="toplog"></div>
-                <div id="myaward" class="topbtn coocaabtn">我的红包</div>
-                <div id="rule" class="topbtn coocaabtn">活动介绍</div>
+                <div id="myaward" class="topbtn coocaabtn"></div>
+                <div id="rule" class="topbtn coocaabtn"></div>
             </div>
             <div id="maingame">
                 <div id="waitgame" class="gamebox coocaabtn">
                     <div class="gametime">本场游戏参与时间：14:00--16:00</div>
                     <div id="waitInfo">
-                        <div id="waitOvertimes">剩余游戏机会：<span></span></div>
                         <div id="waitBest">今日最高成绩：<span></span></div>
-                        <div id="waitTop">当前排名：100+</div>
+                        <div id="waitTop">当前排名：<span></span></div>
+                        <div id="waitOvertimes">剩余游戏机会：<span></span></div>
                     </div>
                 </div>
                 <div id="gameing" class="gamebox coocaabtn">
                     <div class="gametime">本场游戏参与时间：14:00--16:00</div>
                     <div id="todayrecord">今日最高成绩：<span class="todayscore"></span> <span class="todaylistnum"></span></div>
-                    <div id="todaymarquee">sdadasdasdasd,asdasdasdas</div>
-                    <div id="startbtn">按确定开始游戏，剩余<span></span>次机会</div>
+                    <div id="todaymarquee">
+                        <ul id="todayawardul">
+                        </ul>
+                    </div>
+                    <div id="startbtn"><span></span></div>
                 </div>
                 <div id="menu">
                     <div id="missionbox" class="secondBox">
-                        <div class="title">完成以下任务可以获得更多抢红包游戏机会</div>
-                        <div class="menubox coocaabtn" id="mission1">任务一</div>
-                        <div class="menubox coocaabtn" id="mission2">任务二</div>
+                        <div class="title">&nbsp;</div>
+                        <div class="menubox coocaabtn" id="mission1">&nbsp;</div>
+                        <div class="menubox coocaabtn" id="mission2">&nbsp;</div>
                     </div>
                     <div id="listDiv" class="secondBox">
-                        <div class="title">游戏top10|免单榜</div>
+                        <div class="title"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/top10.png"></div>
                         <div class="menubox coocaabtn" id="awardlist">
                             <ul id="awardul">
-                                <li>this  is   test  account  1</li>
-                                <li>this  is   test  account  2</li>
-                                <li>this  is   test  account  3</li>
-                                <li>this  is   test  account  4</li>
-                                <li>this  is   test  account  5</li>
-                                <li>this  is   test  account  6</li>
-                                <li>this  is   test  account  7</li>
-                                <li>this  is   test  account  8</li>
-                                <li>this  is   test  account  9</li>
-                                <li>this  is   test  account  10</li>
-                                <li>this  is   test  account  11</li>
-                                <li>this  is   test  account  12</li>
-                                <li>this  is   test  account  13</li>
-                                <li>this  is   test  account  14</li>
-                                <li>this  is   test  account  15</li>
-                                <li>this  is   test  account  16</li>
-                                <li>this  is   test  account  17</li>
-                                <li>this  is   test  account  18</li>
-                                <li>this  is   test  account  19</li>
-                                <li>this  is   test  account  20</li>
                             </ul>
                         </div>
                     </div>
                     <div id="freebox" class="secondBox">
-                        <div class="title">免单专区</div>
-                        <div class="menubox coocaabtn" id="freeList">s</div>
+                        <div class="title">&nbsp;</div>
+                        <div class="menubox coocaabtn" id="freeList">&nbsp;</div>
                     </div>
-
                 </div>
                 <div id="mainlist">
                     <div id="list1" class="listbox"></div>
@@ -83,15 +65,121 @@
 
             <div id="opacityBg1"></div>
             <div id="opacityBg2"></div>
-
         </div>
         <div id="rulePage">
             这是一个活动介绍页面~~~~~~~~~~~~~~~~~~~~
         </div>
         <div id="freePage">
-            这是一个免单专区页面~~~~~~~~~~~~~~~~~~~~
+            <div id="freeDivBox">
+                <div id="freeDiv">
+                    <div id="freebtn" class="coocaabtn">
+                        <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/freebtn.png" class="fbtn">
+                        <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/freebtnfocus.png" class="fbtnfocus">
+                    </div>
+                    <div id="specialFree" class="freelist">
+                        <div id="speicalTitle">11月11日免单专区<span>（仅限11月11日当天获得免单机会的用户选购）</span></div>
+                        <div id="specialList" class="freshList"></div>
+                    </div>
+                    <div id="normalFree" class="freelist">
+                        <div id="normalTitle">11月13日-月10日免单专区</div>
+                        <div id="normalList" class="freshList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rankbox">
+            <div id="notBegin" style="display:none">
+                <ul>
+                    <p class="text1">游戏尚未开始，先去做任务累积游戏机会吧</p>
+                    <p class="text2">下阶段游戏时间：<span></span></p>
+                    <div class="btn_Get">
+                        <div class="coocaabtn submit" id="task_btn" leftTarget="#task_btn" rightTarget="#task_btn" upTarget="#task_btn" downTarget="#task_btn"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/task_btn.png"></div>
+                    </div>
+                </ul>
+            </div>
+            <div id="begin" style="display:none">
+                <div class="realTime" id="realTime" title="实时榜">
+                    <ul class="ranking" id="rank" style="display:none">
+                    </ul>
+                    <ul class="rankNull" id="rankNull" style="display:none">
+                        <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/empty.png"/>
+                    </ul>
+                </div>
+                <div class="exemption" id="exemption" title="免单榜">
+                    <div class="title"></div>
+                    <ul class="ranking" id="exemption_rank" style="display:none">
+                    </ul>
+                    <ul class="exemptionNull" id="exemptionNull" style="display:none">
+                        <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/empty.png"/>
+                    </ul>
+                </div>
+                <div class="rank_foot">
+                    <ul class="foot1 clearfix">
+                        <li id="user_td_rank" style="display:none"><em class="icon pm"></em>今日排名<span class="rank_todaylistnum"></span>名</li>
+                        <li><em class="icon redbag"></em>今日最高红包数<span class="rank_todayscore"></span>个</li>
+                    </ul>
+                    <ul class="foot2"></ul>
+                    <ul style="margin-top:20px">
+                        <div id="rank_Get" class="rank_Get" title="去做任务" style="display:none">
+                            <div class="coocaabtn submit" id="rank_btn"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/task_btn.png"></div>
+                        </div>
+                        <div id="again_Get" class="again_Get" title="再玩一次" style="display:none">
+                            <div class="coocaabtn submit" id="again_btn"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/again_btn.png"></div>
+                        </div>
+                        <div id="start_Get" class="start_Get" title="开始游戏" style="display:none">
+                            <div class="coocaabtn submit" id="start_game"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/start_game.png"></div>
+                        </div>
+                        <div id="login_Get" class="login_Get" title="立即登录" style="display:none">
+                            <div class="coocaabtn submit" id="login_btn"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/login_btn.png"></div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+            <div id="double11" style="display:none" title="双十一排行榜">
+                <div class="realTime" id="11_realTime" title="今日免单榜">
+                    <ul class="ranking" id="11_rank" style="display:none">
+
+                    </ul>
+                    <ul id="11_rankNull" class="rankNull" style="display:none">
+                        <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/empty.png"/>
+                    </ul>
+                </div>
+                <div class="exemption" id="11_exemption" title="免单榜">
+                    <div class="title"></div>
+                    <ul class="ranking" id="11_exemption_rank" style="display:none">
+
+                    </ul>
+                    <ul id="11_exemptionNull" class="exemptionNull" style="display:none">
+                        <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/empty.png"/>
+                    </ul>
+                </div>
+                <div class="rank_foot">
+                    <ul class="foot3" style="margin-top:60px"></ul>
+                    <ul style="margin-top:20px">
+                        <div id="11_rank_Get" class="rank_Get" title="11去做任务" style="display:none">
+                            <div class="coocaabtn submit" id="11_rank_btn"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/task_btn.png"></div>
+                        </div>
+                        <div id="free_Get" class="free_Get" title="去玩游戏" style="display:none">
+                            <div class="coocaabtn submit" id="free_btn"><img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/free_btn.png"></div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="msgToastBox" style="display: none"><span id="msgToast"></span></div>
+        <div id="blackBg"></div>
+        <div id="freerule"></div>
+        <div id="nochancebox">
+            <div class="nochanceTitle">抱歉，本时段机会已用完~<br>快完成任务获得更多游戏机会吧！</div>
+            <div id="gotoMissionborder" class="btnborder"></div>
+            <div id="gotoMission" class="coocaabtn2"></div>
+            <div id="helpFriendborder" class="btnborder"></div>
+            <div id="helpFriend" class="coocaabtn2"></div>
+        </div>
+        <div id="helpQrcode">
+            <div id="qrcodeBox"></div>
+            <div class="qrcodetitle">微信扫码分享，可额外获得一次游戏机会<br><span>*每用户一天仅限一次</span></div>
+        </div>
 
     </div>
     <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
@@ -100,10 +188,11 @@
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/assist.js"></script>
     <script type="text/javascript" src="js/adjust.js"></script>
+    <script type="text/javascript" src="js/qrcode.js"></script>
     <script type="text/javascript" src="js/coocaamap-1.1.js"></script>
     <script type="text/javascript">
     window.onload = function() {
-        initMap(null)
+//        initMap(null)
     }
     </script>
 </body>
