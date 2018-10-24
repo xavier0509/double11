@@ -40,7 +40,7 @@ cordova.define("coocaaosapi", function(require, exports, module) {
             accountVersion = message.versionCode
         }, function(message) {});
 
-        startapp.check("com.coocaa.mall", function(message) { /* success */
+        startapp.check("com.coocaa.ie", function(message) { /* success */
             console.log("游戏版本："+JSON.stringify(message));
             gameVersion = message.versionCode
         },function (message) {
@@ -1183,9 +1183,9 @@ cordova.define("coocaaosapi", function(require, exports, module) {
     /*
      *启动红包游戏
      */
-    CoocaaOSApi.prototype.startRedGame = function(success,error){
-        argscheck.checkArgs('ff','CoocaaOSApi.startHomeCommonList',arguments);
-        startapp.start([["action", "android.intent.action.D11"]], success,error);
+    CoocaaOSApi.prototype.startRedGame = function(chance,userKeyId,success,error){
+        argscheck.checkArgs('ssff','CoocaaOSApi.startRedGame',arguments);
+        startapp.start([["action", "coocaa.intent.action.ie.games.2018D11","com.coocaa.ie"],[{chance:chance},{userKeyId:userKeyId}]], success,error);
     }
 
     module.exports = new CoocaaOSApi();

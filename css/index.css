@@ -47,7 +47,8 @@ body {
     position: absolute;
     top: 106px;
     left: 68px;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacitying.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiingopa.png");
+    /*background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacitying.png");*/
     z-index: -1;
     display: none;
 }
@@ -57,7 +58,8 @@ body {
     position: absolute;
     top: 106px;
     left: 68px;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacityw.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiopacityw.png");
+    /*background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacityw.png");*/
     z-index: -1;
     display: none;
 }
@@ -126,7 +128,8 @@ body {
     display: none;
     height: 240px;
     padding: 4px;
-    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/waitbanner.jpg");
+    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiwait.jpg");
+    /*background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/waitbanner.jpg");*/
 }
 #waitInfo{
     position: absolute;
@@ -173,7 +176,8 @@ body {
 #gameing{
     display: none;
     height:483px;
-    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/gameingbanner.jpg");
+    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiing.jpg");
+    /*background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/gameingbanner.jpg");*/
     /*padding: 4px;*/
 }
 #startbtn{
@@ -298,6 +302,19 @@ body {
     z-index: 5;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/rulepage.png");
 }
+#needUpdate{
+    width: 925px;
+    height:446px;
+    position: absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    margin: auto;
+    display: none;
+    z-index: 5;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/needup.png");
+}
 #awardul{
     font-size: 22px;
     transition: all 0.2s;
@@ -328,6 +345,16 @@ body {
     font-weight: bold;
     line-height: 80px;
     background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/mission1.png");
+}
+#finishimg{
+    position: absolute;
+    top:45px;
+    left:110px;
+}
+.btnFocus #finishimg{
+    position: absolute;
+    top:0px;
+    left:0px;
 }
 #mission2{
     background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/mission2.png");
@@ -378,8 +405,16 @@ body {
     width:1920px;
     height:1080px;
     overflow: hidden;
-    background: lightyellow;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/rulebg.jpg");
     display: none;
+}
+#ruleInner{
+    width: 1772px;
+    height: 893px;
+    position: absolute;
+    top:157px;
+    left:104px;
+    overflow: auto;
 }
 
 #freePage{
@@ -794,4 +829,112 @@ body {
     height: 1080px;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/11_rank_bg.png");
     position: relative;
+}
+
+
+
+
+
+
+#movebanner{
+    width: 1744px;
+    height: 483px;
+    position: absolute;
+    margin: auto;
+    left: 0px;
+    right:0px;
+    top:128px;
+    overflow: hidden;
+    display: none;
+    z-index: 2;
+}
+.move1{
+    width: 157px;
+    height: 156px;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/qq.png");
+    position: absolute;
+    animation: myfirst1 2s linear 0s infinite ;
+    /* Firefox: */
+    -moz-animation: myfirst1 2s linear 0s infinite ;
+    /* Safari 和 Chrome: */
+    -webkit-animation: myfirst1 2s linear 0s infinite ;
+    /* Opera: */
+    -o-animation: myfirst1 2s linear 0s infinite ;
+}
+
+@keyframes myfirst1
+{
+    0%   {opacity:1;top:0px;left:110px;}
+    25%  {opacity:0.4;top:70px;left:80px;}
+    50%  {opacity:0.3;top:140px;left:50px;}
+    75%  {opacity:0.2;top:210px;left:20px;}
+    100% {opacity:0.1;top:283px;left:0px;}
+}
+@-webkit-keyframes myfirst1
+{
+    0%   {opacity:1;top:0px;left:110px;}
+    25%  {opacity:0.4;top:70px;left:80px;}
+    50%  {opacity:0.3;top:140px;left:50px;}
+    75%  {opacity:0.2;top:210px;left:20px;}
+    100% {opacity:0.1;top:283px;left:0px;}
+}
+.move2{
+    width: 157px;
+    height: 156px;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/qq.png");
+    position: absolute;
+    animation: myfirst2 3.5s linear 0s infinite ;
+    /* Firefox: */
+    -moz-animation: myfirst2 3.5s linear 0s infinite ;
+    /* Safari 和 Chrome: */
+    -webkit-animation: myfirst2 3.5s linear 0s infinite ;
+    /* Opera: */
+    -o-animation: myfirst2 3.5s linear 0s infinite ;
+}
+
+@-webkit-keyframes myfirst2
+{
+    0%   {opacity:1;top:274px;left:381px;}
+    25%  {opacity:0.4;top:326px;left:360px;}
+    50%  {opacity:0.3;top:378px;left:339px;}
+    75%  {opacity:0.2;top:430px;left:318px;}
+    100% {opacity:0.1;top:483px;left:297px;}
+}
+@keyframes myfirst2
+{
+    0%   {opacity:1;top:274px;left:381px;}
+    25%  {opacity:0.4;top:326px;left:360px;}
+    50%  {opacity:0.3;top:378px;left:339px;}
+    75%  {opacity:0.2;top:430px;left:318px;}
+    100% {opacity:0.1;top:483px;left:297px;}
+}
+.move3{
+    width: 157px;
+    height: 156px;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/qq.png");
+    position: absolute;
+    animation: myfirst3 1.5s linear 0s infinite ;
+    /* Firefox: */
+    -moz-animation: myfirst3 1.5s linear 0s infinite ;
+    /* Safari 和 Chrome: */
+    -webkit-animation: myfirst3 1.5s linear 0s infinite ;
+    /* Opera: */
+    -o-animation: myfirst3 1.5s linear 0s infinite ;
+}
+
+@-webkit-keyframes myfirst3
+{
+    0%   {opacity:1;top:118px;left:1588px;}
+    25%  {opacity:0.4;top:209px;left:1551px;}
+    50%  {opacity:0.3;top:300px;left:1514px;}
+    75%  {opacity:0.2;top:391px;left:1477px;}
+    100% {opacity:0.1;top:483px;left:1437px;}
+}
+@keyframes myfirst3
+{
+    0%   {opacity:1;top:118px;left:1588px;}
+    25%  {opacity:0.4;top:209px;left:1551px;}
+    50%  {opacity:0.3;top:300px;left:1514px;}
+    75%  {opacity:0.2;top:391px;left:1477px;}
+    100% {opacity:0.1;top:483px;left:1437px;}
 }

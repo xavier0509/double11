@@ -17,10 +17,17 @@ var app = {
             click_login = "false";
             hasLogin(needQQ,"ranking");
         }
+        
+        if(jr_loginClick&&jr_loginChange){
+            jr_loginClick = false;
+            jr_loginChange = false;
+            sentLog("landing_result",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录成功"}');
+        }else if(jr_loginClick){
+            jr_loginClick = false;
+            jr_loginChange = false;
+            sentLog("landing_result",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录失败"}');
+        }else{
 
-        if(needSentUserLog){
-            needSentUserLog = false;
-            hasLogin(needQQ,false);
         }
 
         if(resumeAndFresh){
@@ -118,9 +125,9 @@ var app = {
         /*receivedElement.setAttribute('style', 'display:block;');*/
 
         console.log('Received Event: ' + id);
-        if(gameVersion<30400033){
+        if(gameVersion<101019){
             appDown.listenApp();
-            appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20180206/20180206103450797932.apk", "98B59D6C52B8BFEA17D250D5D9FF3F1D", "优选购物", "com.coocaa.mall", "26040", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+            appDown.createDownloadTask("http://172.20.132.178/apk/uploads/20181024/20181024183207725899.apk", "91D96B80DA748E116ADBD9989F7F9AB0", "红包游戏", "com.coocaa.ie", "26040", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
         }
         coocaaosapi.getDeviceInfo(function(message) {
             deviceInfo = message;
@@ -165,7 +172,7 @@ var app = {
 
                     listenUser();
                     listenPay();
-                    listenCommon();
+                    // listenCommon();
                 },
                 error: function(error) {
                     console.log("-----------访问失败---------"+JSON.stringify(error));
@@ -203,12 +210,12 @@ var appDown = {
                 waitApkInstallFunc =  setTimeout('appDown.downFail()', 120000);
             } else if (message.status == "ON_STOPPED") {
                 appDown.downFail()
-            } else if (message.status == "ON_REMOVED"&& message.url == "http://apk.sky.fs.skysrt.com/uploads/20180206/20180206103450797932.apk") {
+            } else if (message.status == "ON_REMOVED"&& message.url == "http://172.20.132.178/apk/uploads/20181024/20181024183207725899.apk") {
                 clearTimeout(waitApkInstallFunc);
-                var a = '{ "pkgList": ["com.coocaa.mall"] }'
+                var a = '{ "pkgList": ["com.coocaa.ie"] }'
                 coocaaosapi.getAppInfo(a, function(message) {
                     console.log("getAppInfo====" + message);
-                    var b = "com.coocaa.mall";
+                    var b = "com.coocaa.ie";
                     gameVersion = JSON.parse(message)[b].versionCode;
                 }, function(error) {
                     console.log("getAppInfo----error" + JSON.stringify(error))
@@ -220,7 +227,7 @@ var appDown = {
 
     //下载安装失败
     downFail: function() {
-        downToast = "模块加载失败，正在重试...";
+        downToast = "游戏加载失败，正在重试...";
         downGameFalse = true;
         clearTimeout(waitApkInstallFunc);
         appDown.removeApklisten();
@@ -231,7 +238,7 @@ var appDown = {
         coocaaosapi.createDownloadTask(
             apkurl, md5, title, pkgname, appid, iconurl,
             function(message) {
-               downToast = "模块加载中，请稍后...";
+               downToast = "游戏正在努力加载中~请在加载完毕后再次点击进入";
             },
             function(error) {
                 console.log(error);
@@ -247,6 +254,7 @@ function listenUser() {
         console.log("账户状态变化")
         //刷新前的逻辑判断
         needSentUserLog = true;
+        jr_loginChange = true;
     });
 }
 
@@ -255,7 +263,7 @@ function listenPay() {
     coocaaosapi.addPurchaseOrderListener(function(message) {
         console.log("xjr----------->startpurcharse message  支付结果 " + JSON.stringify(message));
         if (message.presultstatus == 0) {//支付完成~~~~~~
-            sentLog("nalm_buy_for_view_card_pay_result",'{"pay_result":"1"}');
+            sentLog("free_wares_pay_succsse",'{"page_name":"免单专区页面","activity_name":"双十一活动--购物街","product_name":"'+rememberGood+'"}');
         }else{
             sentLog("nalm_buy_for_view_card_pay_result",'{"pay_result":"0"}');
         }
@@ -334,19 +342,27 @@ function initBtn() {
     })
 
     $("#rule").unbind("itemClick").bind("itemClick",function () {
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_name":"游戏规则","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         $("#mainbox").hide();
         $("#rulePage").show();
-        map = new coocaakeymap($("#rulePage"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
+        sentLog("free_wares_page_show",'{"page_name":"活动规则","activity_name":"双十一活动--购物街"}');
+        map = new coocaakeymap($("#ruleInner"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
     })
 
     $("#myaward").unbind("itemClick").bind("itemClick",function () {
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_name":"我的奖励","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         resumeAndFresh = true;
         coocaaosapi.startNewBrowser2(awardurl,function(){},function(){});
     })
 
     $("#freeList").unbind("itemClick").bind("itemClick",function () {
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_name":"免单专区入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         $("#mainbox").hide();
         $("#freePage").show();
+        sentLog("free_wares_page_show",'{"page_name":"免单专区页面","activity_name":"双十一活动--购物街"}');
         $(".freshList").html("");
         $("#freeDiv").css("transform", "translate3D(0, -0px, 0)");
         if(countDay == 9){
@@ -403,12 +419,16 @@ function initBtn() {
         })
         $(".product").unbind("itemClick").bind("itemClick",function () {
             var _this = this;
+            rememberGood = $(_this).attr("pagename");
+            sentLog("free_wares_click",'{"product_name":"'+$(_this).attr("pagename")+'","page_name":"免单专区页面","activity_name":"双十一活动--购物街"}');
             if($(this).attr("pageType") == "1"){
                 coocaaosapi.startAppShopDetail($(this).attr("pageid"),function(){},function(){});
             }else{
                 if(loginstatus == "true"){
                     order($(this).attr("product_id"),$(this).attr("price"));
                 }else{
+                    jr_loginClick = true;
+                    sentLog("landing_page_show",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街"}');
                     startLogin(needQQ);
                 }
             }
@@ -418,8 +438,10 @@ function initBtn() {
 
 
     $("#gameing,#waitgame").unbind("itemClick").bind("itemClick",function () {
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_name":"游戏入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         console.log("++++++++++"+gameVersion);
-        if(gameVersion < 30400033){
+        if(gameVersion < 101019){
             console.log("+++++++++++++++++"+downToast);
             $("#msgToast").html("&nbsp&nbsp&nbsp"+downToast+"&nbsp&nbsp&nbsp");
             $("#msgToastBox").show();
@@ -446,9 +468,14 @@ function initBtn() {
                             if(gameChance > 0){
                                 //todo Start Game------
                                 resumeAndFresh = true;
-                                coocaaosapi.startRedGame(function(){console.log("success")},function(err){console.log("--------------openGameError"+err)});
+                                $("#rankbox").hide();
+                                coocaaosapi.startRedGame(gameChance,userKeyIdinit,function(){
+                                    console.log("success");
+                                    sentLog("money_rain_page_show",'{"page_name":"红包雨游戏页面","activity_name":"双十一活动--购物街"}');
+                                },function(err){console.log("--------------openGameError"+err)});
                             }else{
                                 //todo show windown for mission or qrcode
+                                sentLog("get_game_go_on_page_show",'{"page_name":"获取游戏机会弹窗","activity_name":"双十一活动--购物街"}');
                                 $("#nochancebox").show();
                                 $("#blackBg").show();
                                 $("#gotoMissionborder").show();
@@ -463,6 +490,7 @@ function initBtn() {
                                     $("#helpFriendborder").show();
                                 })
                                 $("#gotoMission").unbind("itemClick").bind("itemClick",function () {
+                                    sentLog("get_game_go_on_button_click",'{"button_name":"做任务","page_name":"获取游戏机会弹窗","activity_name":"双十一活动--购物街"}');
                                     if(isTaskOver == taskList.length){
                                         $("#mission2").trigger("itemClick");
                                     }else{
@@ -470,21 +498,23 @@ function initBtn() {
                                     }
                                 })
                                 $("#helpFriend").unbind("itemClick").bind("itemClick",function () {
+                                    sentLog("get_game_go_on_button_click",'{"button_name":"求助好友","page_name":"获取游戏机会弹窗","activity_name":"双十一活动--购物街"}');
                                     $("#nochancebox").hide();
                                     $("#helpQrcode").show();
+                                    sentLog("get_game_go_on_page_show",'{"page_name":"分享二维码弹窗","activity_name":"双十一活动--购物街"}');
                                     $("#qrcodeBox").html("");
                                     var qrcode = new QRCode(document.getElementById("qrcodeBox"),{width:200,height:200});
-                                    qrcode.makeCode("?activeId="+actionId+"&macAddress="+macAddress+"&emmcId="+emmcId+"&cUDID"+activityId+"&cOpenId"+cOpenId);
+                                    qrcode.makeCode(helpurl+"?activeId="+actionId+"&macAddress="+macAddress+"&emmcId="+emmcId+"&cUDID"+activityId+"&cOpenId"+cOpenId);
                                 })
 
                             }
                         }else{
-                            $("#msgToast").html("&nbsp&nbsp&nbsp当前不在游戏期内，先去做任务可以获得额外机会哦&nbsp&nbsp&nbsp");
+                            $("#msgToast").html("&nbsp&nbsp&nbsp抱歉，游戏未开始~可先做任务提前累积游戏机会哦&nbsp&nbsp&nbsp");
                             $("#msgToastBox").show();
                             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
                         }
                     } else{
-                        $("#msgToast").html("&nbsp&nbsp&nbsp当前不在游戏期内，先去做任务可以获得额外机会哦&nbsp&nbsp&nbsp");
+                        $("#msgToast").html("&nbsp&nbsp&nbsp抱歉，游戏未开始~可先做任务提前累积游戏机会哦&nbsp&nbsp&nbsp");
                         $("#msgToastBox").show();
                         setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
                     }
@@ -517,19 +547,32 @@ function initBtn() {
                     coocaaosapi.startHomeCommonList(pageid,function(msg){exit()},function(error){});
                     break;
                 case "eduEquity"://产品包页面
-                coocaaosapi.startMovieMemberCenter("1","",function(){},function(){});
-                break;
+                    var pageid = $(obj).attr("pageid");
+                    coocaaosapi.startMovieMemberCenter("1","",function(){},function(){});
+                    break;
                 case "movieEquity"://产品包页面
-                var pageid = $(obj).attr("pageid");
-                coocaaosapi.startMovieMemberCenter("0",pageid,function(){},function(){});
-                break;
+                    var pageid = $(obj).attr("pageid");
+                    coocaaosapi.startMovieMemberCenter("0",pageid,function(){},function(){});
+                    break;
+                case "tvmallTopic"://购物专题
+                    var pageid = $(obj).attr("pageid");
+                    coocaaosapi.startAppShopZone2(pageid,function(){},function(){});
+                    break;
+                case "movieTopic"://影视专题
+                    var pageid = $(obj).attr("pageid");
+                    coocaaosapi.startMovieSomePage(pageid,function(){},function(){});
+                    break;
             }
         }
         var _this = this;
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_type":"'+$(_this).attr("taskname")+'","button_name":"任务一","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         console.log("--------"+_this);
         if(isTaskOver == taskList.length){
+            sentLog("shopping_mall_taskone_result",'{"button_type":"'+$(_this).attr("taskname")+'","task_result":"任务一完成","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
             startMission1(_this);
         }else{
+            sentLog("shopping_mall_taskone_result",'{"button_type":"'+$(_this).attr("taskname")+'","task_result":"任务一未完成","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
             $.ajax({
                 type: "post",
                 async: true,
@@ -552,6 +595,8 @@ function initBtn() {
     })
 
     $("#mission2").unbind("itemClick").bind("itemClick",function () {
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_name":"任务二","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         var _this = this;
         if(movieSource == "tencent"){
             coocaaosapi.startHomeCommonList("102829",function(msg){exit()},function(error){});
@@ -561,6 +606,38 @@ function initBtn() {
     })
     $(".module").unbind("itemClick").bind("itemClick",function () {
         var _this = this;
+        remembernum = $(".module").index($(this));
+        console.log("****************"+(_this).parentNode.getAttribute("bannerType"));
+        var business = (_this).parentNode.getAttribute("bannerType");
+        var block_bussiness_type=null,block_order=null,block_name=null;
+        switch (business){
+            case "movie":
+                block_bussiness_type = "影视";
+                break;
+            case "edu":
+                block_bussiness_type = "教育";
+                break;
+            case "mall":
+                block_bussiness_type = "购物";
+                break;
+            case "apk":
+                block_bussiness_type = "应用";
+                break;
+        }
+        switch (remembernum){
+            case "0":case "3":case "6":case "9":
+                block_order = "入口一";
+                break;
+            case "1":case "4":case "7":case "10":
+                block_order = "入口二";
+                break;
+            case "2":case "5":case "8":case "11":
+                block_order = "入口三";
+                break;
+        }
+        block_name = $(_this).attr("missionname");
+        if(gameStatus == "start"){page_type = "游戏进行中"};
+        sentLog("shopping_mall_page_ button_click",'{"block_bussiness_type":"'+block_bussiness_type+'","block_order":"'+block_order+'","block_name":"'+block_name+'","button_name":"各业务入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         // console.log("------------startOperate-------- "+$(_this).attr("missionparam")+"========"+JSON.parse($(_this).attr("missionparam")).params);
         startOperate(_this);
     })
@@ -571,7 +648,7 @@ function initBtn() {
         startLogin(needQQ)
     })
 
-    $("#rank_btn,#11_rank_btn").unbind("itemClick").bind("itemClick",function () {//做任务
+    $("#rank_btn,#11_rank_btn,#task_btn").unbind("itemClick").bind("itemClick",function () {//做任务
         if(isTaskOver == taskList.length){
             $("#mission2").trigger("itemClick");
         }else{
@@ -580,6 +657,8 @@ function initBtn() {
     })
 
     $("#awardlist").unbind("itemClick").bind("itemClick",function () {
+        if(gameStatus == "start"){page_type = "游戏进行中"}
+        sentLog("shopping_mall_page_ button_click",'{"button_name":"排行榜、免单榜","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         rankingList();
     })
 }
@@ -704,7 +783,14 @@ function startOperate(obj) {
         //     break;
         case "movieTurnTopic":case "eduTurnTopic"://轮播专题
             var pageid = $(obj).attr("pageid");
-            coocaaosapi.startVideospecial(pageid,function(){},function(){});
+            if(cAppVersion < 3300000){
+                $("#needUpdate").show();
+                map = new coocaakeymap($("#needUpdate"), $("#needUpdate"), "btnFocus", function() {}, function(val) {}, function(obj) {});
+                setTimeout(hideToast,3000);
+            }else{
+                coocaaosapi.startVideospecial(pageid,function(){},function(){});
+            }
+
             break;
         // case "tvmallTopic"://商品专题
         //     var pageid = $(obj).attr("pageid");
@@ -721,14 +807,24 @@ function startOperate(obj) {
     }
 }
 
+function hideToast() {
+    $("#needUpdate").hide();
+    map = new coocaakeymap($(".coocaabtn"), $(".module:eq("+remembernum+")"), "btnFocus", function() {}, function(val) {}, function(obj) {});
+}
+
 function initGameStatus(resume) {
     if(actionStatus == "end"){
 
     }else if(actionStatus == "start"){
         if(timePart.ifStart){
             gameStatus = "start";
+            if(sentMainpageLog){
+                sentMainpageLog = false;
+                sentLog("shopping_mall_page_show",'{"page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"游戏进行中"}');
+            }
             $("#waitgame").hide();
             $("#gameing").show();
+            $("#movebanner").show();
             $("#opacityBg1").show();
             $("#opacityBg2").hide();
             beginTime = new Date(timePart.beginTime).getHours();
@@ -771,15 +867,20 @@ function initGameStatus(resume) {
             });
         }else{
             gameStatus = "wait";
+            if(sentMainpageLog){
+                sentMainpageLog = false;
+                sentLog("shopping_mall_page_show",'{"page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"游戏未开始"}');
+            }
             $("#waitgame").show();
             $("#gameing").hide();
+            $("#movebanner").hide();
             $("#opacityBg2").show();
             $("#opacityBg1").hide();
             $("#waitOvertimes span").html(gameResult.chance);
             $("#waitBest span").html(gameResult.todayMaxScore);
             if(loginstatus == "true" && gameResult.todayMaxScore > 0 ){
                 $("#waitTop").show();
-                if(gameResult.userRanking > 100){
+                if(gameResult.userRanking < 100){
                     $("#waitTop span").html(gameResult.userRanking)
                 }else{
                     $("#waitTop span").html("100+")
@@ -799,11 +900,12 @@ function initGameStatus(resume) {
 
     }
 //获取运营位
+    console.log("========================"+adressIp + "/light/task/"+actionId+"/banner")
     $.ajax({
         type: "get",
         async: true,
         url: adressIp + "/light/task/"+actionId+"/banner",
-        data: {cNickName:nick_name,id:actionId,source:movieSource},
+        data: {source:movieSource},
         dataType: "json",
         success: function(data) {
             console.log("------------getBanner----result-------------"+JSON.stringify(data));
@@ -952,15 +1054,20 @@ function showPage(first,resume) {
     click_login = "false";
     clearInterval(setInterv2);
     clearInterval(setInterv1);
+    $("#rankbox").hide();
     if(first){
         if(getUrlParam("goto")=="shop"){
             needgotoshop = true;
         }else if(getUrlParam("goto")=="game"){
             $("#mainbox").show();
+            sentMainpageLog = true;
             needgotogame = true;
         }else{
+            sentMainpageLog = true;
             $("#mainbox").show();
         }
+    }else{
+        $("#mainbox").show();
     }
     console.log("---"+macAddress+"------"+TVchip+"-----"+TVmodel+"------"+emmcId+"--------"+activityId + "---------"+access_token+"-------"+cOpenId);
     $.ajax({
@@ -980,6 +1087,7 @@ function showPage(first,resume) {
                 todayMaxScore = gameResult.gameResult;
                 taskList = data.data.taskList;
                 isTaskOver = data.data.isTaskOver;
+                userKeyIdinit = gameResult.userKeyId;
                 userRanking = gameResult.userRanking;//===================zy
                 rankingArea = gameResult.rankingArea;//===================zy
                 todayMaxScore = gameResult.todayMaxScore;//===================zy
@@ -990,7 +1098,23 @@ function showPage(first,resume) {
                 // console.log("*****************"+typeof (taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver])+"___________"+JSON.stringify( (taskList[isTaskOver==taskList.lengrh?isTaskOver-1:isTaskOver])));
                 $("#mission1").attr("pageid", taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].id);
                 $("#mission1").attr("taskType", taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].taskType);
-                $("#mission1").html(taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].name);
+                $("#mission1").attr("taskname", taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].name);
+                if(isTaskOver == taskList.length){
+                    $("#mission1").html(taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].name+"<img id='finishimg' src='http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/finish.png'>");
+                }else{
+                    $("#mission1").html(taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].name);
+                }
+                if(countDay < 5 ){
+                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner1.png")')
+                }else if(countDay<9){
+                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner3.png")')
+                }else{
+                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner2.png")')
+                    $("#gameing").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/gameingbanner.jpg")')
+                    $("#waitgame").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/waitbanner.jpg")')
+                    $("#opacityBg2").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacityw.png")')
+                    $("#opacityBg1").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacitying.png")')
+                }
             } else if(data.code == 50002){
                 actionStatus = "wait";
             }else{
@@ -1007,7 +1131,7 @@ function showPage(first,resume) {
                     if (data.code == 50100) {
                         $("#awardul").html("");
                         if(countDay == 1 && timePart.pastTimePart == null){
-                            $("#awardul").html("<img src='http://beta.webapp.skysrt.com/games/webapp/double11/dev/css/t1.jpg'>");
+                            $("#awardul").html("<img src='http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/nostartlist.png'>");
                         }else{
                             if(data.data.rankingList.length == 0){
                                 console.log("----------------显示免单榜");
