@@ -19,7 +19,7 @@ function hasLogin(needQQ,fresh) {
             }
         } else {
             coocaaosapi.getUserInfo(function(message) {
-                console.log("funnyxxxxxx==" + JSON.stringify(message))
+                console.log(fresh+"===funnyxxxxxx==" + JSON.stringify(message));
                 userInfo = message;
                 cOpenId = message.open_id;
                 exterInfo = message.external_info;
@@ -64,22 +64,10 @@ function hasLogin(needQQ,fresh) {
                                         loginstatus = "false";
                                     }
                                 }
-                                if(fresh == "ranking"){//=============zy
-                                    rankingList();
-                                    needInit = true;
-                                } else if(fresh){
-                                    showPage(true,false);
-                                }
                             } else {
                                 tencentWay = "both";
                                 cOpenId = "";
                                 loginstatus = "false";
-                                if(fresh == "ranking"){//=============zy
-                                    rankingList();
-                                    needInit = true;
-                                } else if(fresh){
-                                    showPage(true,false);
-                                }
                             }
                         } else {
                             var needSelectNum = 0;
@@ -109,12 +97,6 @@ function hasLogin(needQQ,fresh) {
                                     loginstatus = "false";
                                 }
                             }
-                            if(fresh == "ranking"){//=============zy
-                                rankingList();
-                                needInit = true;
-                            } else if(fresh){
-                                showPage(true,false);
-                            }
                         }
                     } else {
                         qqinfo = JSON.parse(exterInfo);
@@ -139,15 +121,17 @@ function hasLogin(needQQ,fresh) {
                             return;
                         }else{
                             showFlag = access_token
-                            if(fresh == "ranking"){//=============zy
-                                rankingList();
-                                needInit = true;
-                            } else if(fresh){
-                                showPage(true,false);
-                            }
                         }
                     }
-                }, function(error) { console.log(error); })
+                }, function(error) { 
+                    console.log(error);
+                });
+                if(fresh == "ranking"){//=============zy不移位置获取不到
+                    rankingList();
+                    needInit = true;
+                } else if(fresh){
+                    showPage(true,false);
+                }
             }, function(error) { console.log(error); });
         }
 

@@ -304,7 +304,7 @@ cordova.define("coocaaosapi", function(require, exports, module) {
     }
 
     /*
-     * 轮播专题
+     * 轮播专题[一级]
      */
     CoocaaOSApi.prototype.startVideospecial = function(detailid, success, error) {
         argscheck.checkArgs('sff', 'CoocaaOSApi.startVideospecial', arguments);
@@ -312,6 +312,18 @@ cordova.define("coocaaosapi", function(require, exports, module) {
             ["action", "coocaa.intent.movie.videospecial"],
             [{
                 'topicCode': detailid
+            }]
+        ], success, error);
+    }
+    /*
+     * 轮播专题【两级】
+     */
+    CoocaaOSApi.prototype.startVideospecial2 = function(detailid, success, error) {
+        argscheck.checkArgs('sff', 'CoocaaOSApi.startVideospecial2', arguments);
+        startapp.start([
+            ["action", "coocaa.intent.movie.videospecial"],
+            [{
+                'pTopicCode': detailid
             }]
         ], success, error);
     }
@@ -907,7 +919,7 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         startapp.start([
             ["action", "coocaa.intent.action.HOME_SPECIAL_TOPIC"],
             [{
-                "id": id
+                "id": detailid
             }]
         ], success, error);
     }
@@ -1027,7 +1039,7 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         console.log("启动新版浏览器")
         argscheck.checkArgs('sff', 'CoocaaOSApi.startNewBrowser', arguments);
         startapp.start([
-            ["action", "coocaa.intent.action.browser.no_trans.no_route", "com.coocaa.app_browser"],
+            ["action", "coocaa.intent.action.browser.no_route", "com.coocaa.app_browser"],
             [{ "url": url }]
         ], success, error);
     }
@@ -1040,7 +1052,7 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         var task = FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_MULTIPLE_TASK;
         argscheck.checkArgs('sff', 'CoocaaOSApi.startNewBrowser2', arguments);
         startapp.start([
-            ["action", "coocaa.intent.action.browser", "com.coocaa.app_browser", "", "", task + ""],
+            ["action", "coocaa.intent.action.browser.no_route", "com.coocaa.app_browser", "", "", task + ""],
             [{ "url": url }]
         ], success, error);
     }
@@ -1148,7 +1160,9 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         argscheck.checkArgs('ssssssff', 'CoocaaOSApi.startCommonNormalAction', arguments);
         str = JSON.parse(str);
         startapp.start([
-            [param1,param2,param3,param4,param5], str
+            [param1,param2,param3,param4,param5],
+            // ["com.stvgame.calabash", "","","",""],
+            str
         ], success, error);
         // startapp.start([["cn.cheerz.icw", "","","","wit://cn.cheerz.icw/MainActivity"],[{"subpage":"1"},{"type":"3"}]], success,error);
     }

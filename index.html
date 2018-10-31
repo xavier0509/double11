@@ -26,16 +26,17 @@
             </div>
             <div id="maingame">
                 <div id="waitgame" class="gamebox coocaabtn">
-                    <div class="gametime">本场游戏参与时间：14:00--16:00</div>
+                    <div class="gametime"></div>
                     <div id="waitInfo">
                         <div id="waitBest">今日最高成绩：<span></span></div>
                         <div id="waitTop">当前排名：<span></span></div>
                         <div id="waitOvertimes">剩余游戏机会：<span></span></div>
                     </div>
+                    <div id="endbtn"></div>
                 </div>
                 <div id="gameing" class="gamebox coocaabtn">
-                    <div class="gametime">本场游戏参与时间：14:00--16:00</div>
-                    <div id="todayrecord">今日最高成绩：<span class="todayscore"></span> <span class="todaylistnum"></span></div>
+                    <div class="gametime"></div>
+                    <div id="todayrecord" style="display:none">今日最高成绩：<span class="todayscore"></span> <span class="todaylistnum"></span></div>
                     <div id="todaymarquee">
                         <ul id="todayawardul">
                         </ul>
@@ -74,8 +75,8 @@
         <div id="rulePage">
             <div id="ruleInner">
                 <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/rule1.png" alt=""/>
-                <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/rule1.png" alt=""/>
-                <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/rule1.png" alt=""/>
+                <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/rule2.png" style="margin-top: 15px" alt=""/>
+                <img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/rule3.png" alt=""/>
             </div>
         </div>
         <div id="freePage">
@@ -125,7 +126,7 @@
                 <div class="rank_foot">
                     <ul class="foot1 clearfix">
                         <li id="user_td_rank" style="display:none"><em class="icon pm"></em>今日排名<span class="rank_todaylistnum"></span>名</li>
-                        <li><em class="icon redbag"></em>今日最高红包数<span class="rank_todayscore"></span>个</li>
+                        <li id="user_td_red" style="display:none"><em class="icon redbag"></em>今日最高红包数<span class="rank_todayscore">21</span>个</li>
                     </ul>
                     <ul class="foot2"></ul>
                     <ul style="margin-top:20px">

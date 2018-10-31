@@ -29,7 +29,7 @@ var needgotogame = false;
 var exitWeb = false;
 
 var actionStatus = "start";
-var gameStatus = "start";
+var gameStatus = "";
 
 var countDay = 0;//活动开始的第几天
 var timePart = null;//活动的时段信息
@@ -49,10 +49,11 @@ var arrBanner = [];
 var bannerNanme = [];
 var needInit = false;
 var remembernum = null;
+var zy_todayMaxScore = 0;
 
 var adressIp = "http://beta.restful.lottery.coocaatv.com";
 // var adressIp = "https://restful.skysrt.com";
-var actionId = "150";
+var actionId = "151";
 // var actionId = "55";
 
 //普通场奇异
@@ -64,7 +65,8 @@ var _freeList = {
     "pkg5":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good5.png","id":"16843","name":"双立人多用刀具2件套","type":"1","product_id":"","price":""},
     "pkg6":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good6.png","id":"16845","name":"巴拉利煎炒锅","type":"1","product_id":"","price":""},
     "pkg7":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good7.png","id":"","name":"教育超级VIP","type":"2","product_id":"1194","price":"49900"},
-    "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1203","price":"24900"}
+   // "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1203","price":"24900"}
+    "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1","price":"1"}
 }
 //普通场腾讯
 var _freeList2 = {
@@ -93,15 +95,15 @@ var _freeList3 = {
 var needgotoRankList = false;
 var needSentUserLog = false;
 var resumeAndFresh = false;
-var click_login = "false"; //==============zy
+var click_login = false; //==============zy
 var startActionReplace = "coocaa.intent.action.HOME";
 
 var setInterv1 = null;
 var setInterv2 = null;
 var userKeyIdinit = null;
 
-var awardurl = "https://beta.webapp.skysrt.com/lxw/example/index.html?part=award";
-var helpurl = "https://beta.webapp.skysrt.com/games/webapp/double11/address/help.html";
+var awardurl = "https://beta.webapp.skysrt.com/games/webapp/double11/example/index.html?part=award";
+var helpurl = "http://beta.webapp.skysrt.com/games/webapp/double11/address/help.html";
 
 // var awardurl = "http://beta.webapp.skysrt.com/lxw/gq/index.html?part=award&source=main&status=";
 
@@ -112,6 +114,13 @@ var jr_loginClick = false;
 var jr_loginChange = false;
 var rememberGood = "";
 
+var freeexit = "";
+
+var rank_to_game = "";
+var rank_to_tast = "";
+
+var fromFreeAndFresh = false;
+var clickFast = false;
 
 
 

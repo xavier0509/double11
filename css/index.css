@@ -196,6 +196,18 @@ body {
     border-radius: 38px;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/startbtn.png");
 }
+#endbtn{
+    width: 281px;
+    height:61px;
+    position: absolute;
+    top:163px;
+    left:729px;
+    text-align: center;
+    padding: 4px;
+    border-radius: 38px;
+    display: none;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/endbtn.png");
+}
 .btnFocus #startbtn{
     padding: 0px;
     width: 374px;
@@ -316,10 +328,14 @@ body {
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/needup.png");
 }
 #awardul{
+    /*padding-top:1px;*/
     font-size: 22px;
     transition: all 0.2s;
     -moz-transition: all 0.2s;
     -webkit-transition: all 0.2s;
+}
+#awardul li:nth-child(6){
+    /*padding-top: 1px;*/
 }
 #awardul li{
     height: 27.4px;
@@ -400,7 +416,13 @@ body {
     font-size: 20px;
     color: white;
 }
-
+.zy_coupon{
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/banner_bg.png");
+    width: 305px;
+    height: 33px;
+    line-height: 33px;
+    text-align: center;
+}
 #rulePage{
     width:1920px;
     height:1080px;
@@ -421,7 +443,7 @@ body {
     width:1920px;
     height:1080px;
     overflow: hidden;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/freebg.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/newfreebg.jpg");
     display: none;
 }
 .fbtn,.fbtnfocus{
@@ -746,6 +768,7 @@ body {
 }
 .foot1{
     text-align: center;
+    height: 80px;
 }
 .foot1 li{
     height: 80px;
@@ -937,4 +960,19 @@ body {
     50%  {opacity:0.3;top:300px;left:1514px;}
     75%  {opacity:0.2;top:391px;left:1477px;}
     100% {opacity:0.1;top:483px;left:1437px;}
+}
+
+.user_name{
+    display:inline-block;
+    width:130px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.user_award{
+    width: 332px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
