@@ -1,6 +1,6 @@
 var btnFrom = null;
 var exterInfo = "";
-function hasLogin(needQQ,fresh) {
+function hasLogin(needQQ,fresh,ifFirst) {
     coocaaosapi.hasCoocaaUserLogin(function(message) {
         console.log("haslogin " + message.haslogin);
         loginstatus = message.haslogin;
@@ -15,7 +15,11 @@ function hasLogin(needQQ,fresh) {
             if(fresh == "ranking"){//=============zy
                 rankingList();
             } else if(fresh){
-                showPage(true,false);
+                if(ifFirst){
+                    showPage(true,false);
+                }else{
+                    showPage(false,false);
+                }
             }
         } else {
             coocaaosapi.getUserInfo(function(message) {
@@ -130,7 +134,11 @@ function hasLogin(needQQ,fresh) {
                     rankingList();
                     needInit = true;
                 } else if(fresh){
-                    showPage(true,false);
+                    if(ifFirst){
+                        showPage(true,false);
+                    }else{
+                        showPage(false,false);
+                    }
                 }
             }, function(error) { console.log(error); });
         }

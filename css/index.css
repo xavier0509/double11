@@ -337,6 +337,12 @@ body {
 #awardul li:nth-child(6){
     /*padding-top: 1px;*/
 }
+/*#awardul li:nth-child(11){*/
+    /*padding-top: -2px;*/
+/*}*/
+/*#awardul li:nth-child(16){*/
+    /*padding-top: -2px;*/
+/*}*/
 #awardul li{
     height: 27.4px;
     line-height: 27.4px;
@@ -411,17 +417,28 @@ body {
 }
 .coupon{
     position: absolute;
-    bottom:0px;
-    right:10px;
+    bottom:4px;
+    right:4px;
     font-size: 20px;
     color: white;
 }
 .zy_coupon{
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/banner_bg.png");
-    width: 305px;
-    height: 33px;
-    line-height: 33px;
-    text-align: center;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/banner_bg123.png");
+    width: 353px;
+    height: 59px;
+    line-height: 59px;
+    text-align: right;
+}
+/*.konw{*/
+    /*display: inline-block;*/
+    /*width: 333px;*/
+    /*text-align: left;*/
+    /*margin-left: 20px;*/
+    /*border: 1px solid blue;*/
+/*}*/
+.couponname{
+    color: #fff83d;
+    font-weight: bold;
 }
 #rulePage{
     width:1920px;

@@ -1161,10 +1161,8 @@ cordova.define("coocaaosapi", function(require, exports, module) {
         str = JSON.parse(str);
         startapp.start([
             [param1,param2,param3,param4,param5],
-            // ["com.stvgame.calabash", "","","",""],
             str
         ], success, error);
-        // startapp.start([["cn.cheerz.icw", "","","","wit://cn.cheerz.icw/MainActivity"],[{"subpage":"1"},{"type":"3"}]], success,error);
     }
 
     //

@@ -51,10 +51,13 @@ var needInit = false;
 var remembernum = null;
 var zy_todayMaxScore = 0;
 
-var adressIp = "http://beta.restful.lottery.coocaatv.com";
-// var adressIp = "https://restful.skysrt.com";
-var actionId = "151";
-// var actionId = "55";
+// var adressIp = "http://beta.restful.lottery.coocaatv.com";
+// var orderUrl = "http://172.20.132.182:8090/v3/order/genOrderByJsonp.html?data=";
+// var actionId = "153";
+var adressIp = "https://restful.skysrt.com";
+var orderUrl = "https://api-business.skysrt.com/v3/order/genOrderByJsonp.html?data=";
+var actionId = "79";
+
 
 //普通场奇异
 var _freeList = {
@@ -64,9 +67,9 @@ var _freeList = {
     "pkg4":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good4.png","id":"16847","name":"怡万家马卡龙保鲜盒九件套","type":"1","product_id":"","price":""},
     "pkg5":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good5.png","id":"16843","name":"双立人多用刀具2件套","type":"1","product_id":"","price":""},
     "pkg6":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good6.png","id":"16845","name":"巴拉利煎炒锅","type":"1","product_id":"","price":""},
-    "pkg7":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good7.png","id":"","name":"教育超级VIP","type":"2","product_id":"1194","price":"49900"},
-   // "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1203","price":"24900"}
-    "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1","price":"1"}
+    "pkg7":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1203","price":"24900"},
+    "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good7.png","id":"","name":"教育超级VIP","type":"2","product_id":"1194","price":"49900"}
+    // "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good8.png","id":"","name":"奇异果VIP年卡","type":"2","product_id":"1","price":"1"}
 }
 //普通场腾讯
 var _freeList2 = {
@@ -76,9 +79,9 @@ var _freeList2 = {
     "pkg4":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good4.png","id":"16847","name":"怡万家马卡龙保鲜盒九件套","type":"1","product_id":"","price":""},
     "pkg5":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good5.png","id":"16843","name":"双立人多用刀具2件套","type":"1","product_id":"","price":""},
     "pkg6":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good6.png","id":"16845","name":"巴拉利煎炒锅","type":"1","product_id":"","price":""},
-    "pkg7":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good7.png","id":"","name":"教育超级VIP","type":"2","product_id":"1194","price":"49900"},
-    // "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good9.png","id":"","name":"影视VIP年卡","type":"2","product_id":"1201","price":"18000"}
-    "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good9.png","id":"","name":"影视VIP年卡","type":"2","product_id":"1","price":"1"}
+    "pkg7":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good9.png","id":"","name":"影视VIP年卡","type":"2","product_id":"1201","price":"18000"},
+    "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good7.png","id":"","name":"教育超级VIP","type":"2","product_id":"1194","price":"49900"}
+    // "pkg8":{"img":"http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/good9.png","id":"","name":"影视VIP年卡","type":"2","product_id":"1","price":"1"}
 }
 //双十一场
 var _freeList3 = {
@@ -102,10 +105,11 @@ var setInterv1 = null;
 var setInterv2 = null;
 var userKeyIdinit = null;
 
-var awardurl = "https://beta.webapp.skysrt.com/games/webapp/double11/example/index.html?part=award";
-var helpurl = "http://beta.webapp.skysrt.com/games/webapp/double11/address/help.html";
+// var awardurl = "https://beta.webapp.skysrt.com/games/webapp/double11/example/index.html?part=award";
+// var helpurl = "http://beta.webapp.skysrt.com/games/webapp/double11/address/help.html";
 
-// var awardurl = "http://beta.webapp.skysrt.com/lxw/gq/index.html?part=award&source=main&status=";
+var awardurl = "https://webapp.skysrt.com/games/double11/example/index.html?part=award";
+var helpurl = "https://webapp.skysrt.com/games/double11/address/help.html";
 
 var sentMainpageLog = false;
 var page_type = "游戏未开始";
@@ -121,6 +125,12 @@ var rank_to_tast = "";
 
 var fromFreeAndFresh = false;
 var clickFast = false;
+
+var userRanking = null;//===================zy
+var rankingArea = null;//===================zy
+var rankifStart = false;//===================zy
+var pastTimePart = null;//===================zy
+var double11 = false;//===================zy
 
 
 

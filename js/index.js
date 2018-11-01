@@ -18,7 +18,7 @@ var app = {
             click_login = false;
             jr_loginChange = false;
             sentLog("landing_result",'{"last_page_name":"排行榜页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录成功"}');
-            hasLogin(needQQ,"ranking");
+            hasLogin(needQQ,"ranking",false);
         }else if(click_login){
             click_login = false;
             jr_loginChange = false;
@@ -30,7 +30,7 @@ var app = {
             jr_loginChange = false;
             sentLog("landing_result",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录成功"}');
             fromFreeAndFresh = true;
-            hasLogin(needQQ,false);
+            hasLogin(needQQ,false,false);
         }else if(jr_loginClick){
             jr_loginClick = false;
             jr_loginChange = false;
@@ -44,7 +44,7 @@ var app = {
             $("#blackBg").hide();
             resumeAndFresh = false;
         //    showPage(false,true);
-            hasLogin(needQQ,true);//===========zy从获奖界面退出需要判断是否有登录
+            hasLogin(needQQ,true,false);//===========zy从获奖界面退出需要判断是否有登录
         }
     },
     handlepause: function() {
@@ -83,6 +83,7 @@ var app = {
         }else if($("#helpQrcode").css("display")=="block"){
             $("#helpQrcode").hide();
             $("#blackBg").hide();
+            console.log("------------------"+$("#rankbox").css("display"))
             if($("#rankbox").css("display")=="block"){
                 //=======================================
                 $.ajax({
@@ -93,7 +94,11 @@ var app = {
                     dataType: "json",
                     success: function(data) {
                         if(data.code == 50100){
+                            console.log("------------init----result-------------"+JSON.stringify(data));
                             gameChance = data.data;
+                            rankingList();
+                        }else{
+                            console.log("------------init----result-------------"+JSON.stringify(data));
                             rankingList();
                         }
                     },
@@ -141,9 +146,9 @@ var app = {
         /*receivedElement.setAttribute('style', 'display:block;');*/
 
         console.log('Received Event: ' + id);
-        if(gameVersion<101041){
+        if(gameVersion<101044){
             appDown.listenApp();
-            appDown.createDownloadTask("http://172.20.132.178/apk/uploads/20181027/20181027162352829198.apk", "FCDDFBDB082377CDB4C6414759A3576A", "红包游戏", "com.coocaa.ie", "101041", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+            appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20181030/20181030114924347482.apk", "1D4CB3A15516FA1A102C4116B3F9A2D1", "红包游戏", "com.coocaa.ie", "101044", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
         }
         coocaaosapi.getDeviceInfo(function(message) {
             deviceInfo = message;
@@ -184,7 +189,7 @@ var app = {
                             needQQ = true;
                         }
                     }
-                    hasLogin(needQQ,true);
+                    hasLogin(needQQ,true,true);
 
                     listenUser();
                     listenPay();
@@ -226,7 +231,7 @@ var appDown = {
                 waitApkInstallFunc =  setTimeout('appDown.downFail()', 120000);
             } else if (message.status == "ON_STOPPED") {
                 appDown.downFail()
-            } else if (message.status == "ON_REMOVED"&& message.url == "http://172.20.132.178/apk/uploads/20181027/20181027162352829198.apk") {
+            } else if (message.status == "ON_REMOVED"&& message.url == "http://apk.sky.fs.skysrt.com/uploads/20181030/20181030114924347482.apk") {
                 clearTimeout(waitApkInstallFunc);
                 var a = '{ "pkgList": ["com.coocaa.ie"] }'
                 coocaaosapi.getAppInfo(a, function(message) {
@@ -381,7 +386,7 @@ function initBtn() {
         sentLog("free_wares_page_show",'{"page_name":"免单专区页面","activity_name":"双十一活动--购物街"}');
         $(".freshList").html("");
         $("#freeDiv").css("transform", "translate3D(0, -0px, 0)");
-        if(countDay == 9){
+        if(countDay >= 9){
             $("#specialFree").show();
             var specialbox = document.getElementById("specialList");
             for(var i=1;i<=8;i++){
@@ -469,7 +474,7 @@ function initBtn() {
             sentLog("shopping_mall_page_button_click",'{"button_name":"游戏入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         }
         console.log("++++++++++"+gameVersion);
-        if(gameVersion < 101041){
+        if(gameVersion < 101044){
             console.log("+++++++++++++++++"+downToast);
             $("#msgToast").html("&nbsp&nbsp&nbsp"+downToast+"&nbsp&nbsp&nbsp");
             $("#msgToastBox").show();
@@ -537,7 +542,7 @@ function initBtn() {
 
                             }
                         }else{
-                            if(actionStatus == "end"){
+                            if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
                                 $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
                             }else{
                                 $("#msgToast").html("&nbsp&nbsp&nbsp抱歉，游戏未开始~可先做任务提前累积游戏机会哦&nbsp&nbsp&nbsp");
@@ -546,7 +551,7 @@ function initBtn() {
                             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
                         }
                     } else{
-                        if(actionStatus == "end"){
+                        if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
                             $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
                         }else{
                             $("#msgToast").html("&nbsp&nbsp&nbsp抱歉，游戏未开始~可先做任务提前累积游戏机会哦&nbsp&nbsp&nbsp");
@@ -585,12 +590,16 @@ function initBtn() {
         }else {
             clickFast = true;
         }
-        if(actionStatus == "end"){
-            return;
-        }
         function setClickFast() {
             clickFast = false;
         }
+        if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
+            $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+            $("#msgToastBox").show();
+            setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
+            return;
+        }
+
         resumeAndFresh = true;
         function startMission1(obj) {
             var startType = $(obj).attr("taskType");
@@ -667,15 +676,15 @@ function initBtn() {
             sentLog("shopping_mall_page_button_click",'{"button_name":"任务二","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
         }
         var _this = this;
-        if(actionStatus == "end"){
+        if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
             $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
             $("#msgToastBox").show();
             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
         }else{
             if(movieSource == "tencent"){
-                coocaaosapi.startHomeCommonList("102829",function(msg){exit()},function(error){});
+                coocaaosapi.startMovieHomeSpecialTopic("102829",function(msg){exit()},function(error){});
             }else{
-                coocaaosapi.startHomeCommonList("102830",function(msg){exit()},function(error){});
+                coocaaosapi.startMovieHomeSpecialTopic("102830",function(msg){exit()},function(error){});
             }
         }
     })
@@ -745,7 +754,14 @@ function initBtn() {
     $("#awardlist").unbind("itemClick").bind("itemClick",function () {
         if(gameStatus == "start"){page_type = "游戏进行中"}
         sentLog("shopping_mall_page_button_click",'{"button_name":"排行榜、免单榜","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
-        rankingList();
+
+        if(actionStatus == "end" || (timePart.nextTimePart == null&& !timePart.ifStart)){
+            $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+            $("#msgToastBox").show();
+            setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
+        }else{
+            rankingList();
+        }
     })
 }
 
@@ -775,8 +791,7 @@ function order(productid,price) {
     $.ajax({
         type: "get",
         async: true,
-        // url: "https://api-business.skysrt.com/v3/order/genOrderByJsonp.html?data=" + data1, //需改
-        url: "http://172.20.132.182:8090/v3/order/genOrderByJsonp.html?data=" + data1, //需改
+        url: orderUrl + data1, //需改
         dataType: "jsonp",
         jsonp: "callback",
         timeout: 20000,
@@ -1000,35 +1015,50 @@ function initGameStatus(resume) {
 
 
         }else{
-            gameStatus = "wait";
-            if(sentMainpageLog){
-                sentMainpageLog = false;
-                sentLog("shopping_mall_page_show",'{"page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"游戏未开始"}');
-            }
-            $("#waitgame").show();
-            $("#gameing").hide();
-            $("#movebanner").hide();
-            $("#opacityBg2").show();
-            $("#opacityBg1").hide();
-            $("#waitOvertimes span").html(gameResult.chance);
-            $("#waitBest span").html(gameResult.todayMaxScore);
-            if(loginstatus == "true" && gameResult.todayMaxScore > 0 ){
-                $("#waitTop").show();
-                if(gameResult.userRanking < 100){
-                    $("#waitTop span").html(gameResult.userRanking)
-                }else{
-                    $("#waitTop span").html("100+")
+            if(timePart.nextTimePart == null){
+                $("#waitgame").show();
+                $("#gameing").hide();
+                $("#movebanner").hide();
+                $("#opacityBg2").show();
+                $("#opacityBg1").hide();
+                $("#waitInfo").hide();
+                $("#endbtn").show();
+                $("#waitgame .gametime").hide();
+                $("#waitgame").css("background","url('http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/endbanner.jpg')");
+                $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner2.png")');
+                $("#mission1").html("活动已结束")
+            }else{
+                gameStatus = "wait";
+                if(sentMainpageLog){
+                    sentMainpageLog = false;
+                    sentLog("shopping_mall_page_show",'{"page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"游戏未开始"}');
                 }
-            }else{
-                $("#waitTop").hide();
+                $("#waitgame").show();
+                $("#gameing").hide();
+                $("#movebanner").hide();
+                $("#opacityBg2").show();
+                $("#opacityBg1").hide();
+                $("#waitOvertimes span").html(gameResult.chance);
+                $("#waitBest span").html(gameResult.todayMaxScore);
+                if(loginstatus == "true" && gameResult.todayMaxScore > 0 ){
+                    $("#waitTop").show();
+                    if(gameResult.userRanking < 100){
+                        $("#waitTop span").html(gameResult.userRanking)
+                    }else{
+                        $("#waitTop span").html("100+")
+                    }
+                }else{
+                    $("#waitTop").hide();
+                }
+                beginTime = new Date(timePart.nextTimePart.beginTime).getHours();
+                endTime = new Date(timePart.nextTimePart.endTime).getHours();
+                if(timePart.nextTimePart.ifNextDay){
+                    $("#waitgame .gametime").html("下一场游戏时间：明天"+beginTime+":00--"+endTime+":00");
+                }else{
+                    $("#waitgame .gametime").html("下一场游戏时间："+beginTime+":00--"+endTime+":00");
+                }
             }
-            beginTime = new Date(timePart.nextTimePart.beginTime).getHours();
-            endTime = new Date(timePart.nextTimePart.endTime).getHours();
-            if(timePart.nextTimePart.ifNextDay){
-                $("#waitgame .gametime").html("下一场游戏时间：明天"+beginTime+":00--"+endTime+":00");
-            }else{
-                $("#waitgame .gametime").html("下一场游戏时间："+beginTime+":00--"+endTime+":00");
-            }
+
         }
     }else{
 
@@ -1174,7 +1204,7 @@ function initGameStatus(resume) {
                showcoupon(showMovie,"movie");
                function showcoupon(name,type) {
                    if(name!=""&&name!=null){
-                       $("[bannerType="+type+"] .module1 .coupon").html("还有"+name+"尚未使用！").addClass('zy_coupon');
+                       $("[bannerType="+type+"] .module1 .coupon").html("<span class='konw'>已获<span class='couponname'>"+name+"</span>优惠券,可马上使用</span>").addClass('zy_coupon');
                    }
                }
             }
@@ -1279,7 +1309,10 @@ function showPage(first,resume) {
                         $("#awardul").html("");
                         if(countDay == 1 && timePart.pastTimePart == null){
                             $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/nostartlist.png")');
-                        }else{
+                        }else if(actionStatus == "end"){
+                            $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/nostartlist.png")');
+                        }
+                        else{
                             $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/mission3.png")');
                             if(data.data.rankingList.length == 0){
                                 console.log("----------------显示免单榜");
@@ -1296,9 +1329,15 @@ function showPage(first,resume) {
                                     list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+free_cNickName+'</span><span class="li_s3">'+data.data.freeList[i].score+'个</span>';
                                     box.appendChild(list);
                                 }
+                                showAwardlist("#awardlist","#awardul",setInterv2);
                             }else{
-                                if(countDay == 9){
-                                    $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/miandanbang.png">');
+                                if(countDay >= 9){
+                                    if(actionStatus == "end"){
+                                        $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/window/todayfreeend123.png">');
+                                    }else{
+                                        $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/window/todayfreeend123.png">');
+                                    }
+
                                     $.ajax({
                                         type: "get",
                                         async: true,
@@ -1306,7 +1345,7 @@ function showPage(first,resume) {
                                         data: {cNickName:nick_name,activeId:actionId, MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId},
                                         dataType: "json",
                                         success: function(data) {
-                                            console.log("------------showCoupon----result-------------"+JSON.stringify(data));
+                                            console.log("------------showFreeDayList----result-------------"+JSON.stringify(data));
                                             if (data.code == 50100) {
                                                 var listLength = data.data.length;
                                                 var box = document.getElementById("awardul");
@@ -1320,6 +1359,7 @@ function showPage(first,resume) {
                                                     list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+free_cNickName+'</span><span class="li_s3">免单</span>';
                                                     box.appendChild(list);
                                                 }
+                                                showAwardlist("#awardlist","#awardul",setInterv2);
                                             }
                                             else{}
                                         },
@@ -1329,7 +1369,7 @@ function showPage(first,resume) {
                                     });
                                 }else{
                                     console.log("----------------显示排行榜");
-                                    $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/top10.png">');
+                                    $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newtop10.png">');
                                     var listlength = data.data.rankingList.length;
                                     var box = document.getElementById("awardul");
                                     for(var i=0;i<listlength;i++){
@@ -1343,8 +1383,9 @@ function showPage(first,resume) {
                                         box.appendChild(list);
                                     }
                                 }
+                                showAwardlist("#awardlist","#awardul",setInterv2);
                             }
-                            showAwardlist("#awardlist","#awardul",setInterv2);
+                            // showAwardlist("#awardlist","#awardul",setInterv2);
                         }
                     } else{}
                     initGameStatus(resume);
@@ -1455,12 +1496,12 @@ function rankingList(){
                                 }else{
                                     cNickName = data.data[i].cNickName;
                                 }
-                                var list = ' <li><span class="order o_'+n+'">'+n+'</span><span class="name" style="width:380px">'+cNickName+'</span><span>'+data.data[i].timeKey+'</span></li>';
+                                var list = ' <li><span class="order o_'+i+'">'+n+'</span><span class="name" style="width:380px">'+cNickName+'</span><span>'+data.data[i].timeKey+'</span></li>';
                                 $("#11_rank").append(list);
                             }
-                            $(".o_1").addClass('icon first')
-                            $(".o_2").addClass('icon two')
-                            $(".o_3").addClass('icon three')
+                            $(".o_0").addClass('icon first')
+                            $(".o_1").addClass('icon two')
+                            $(".o_2").addClass('icon three')
                         }else{
                             document.getElementById("11_rankNull").style.display = "block";
                         }
@@ -1499,7 +1540,11 @@ function rankingList(){
                         var str = JSON.stringify(data.data.theDayBefore);
                         month = str.substring(6, 8);
                         day = str.substring(9, 11);
-                        $("#exemption .title").html(month+"月"+day+"日免单榜");
+                        if(countDay == 1){
+                            $("#exemption .title").html("11月3日免单榜");
+                        }else{
+                            $("#exemption .title").html(month+"月"+day+"日免单榜");
+                        }
                         document.getElementById("rank").innerHTML = "";
                         document.getElementById("exemption_rank").innerHTML = "";
                         if(data.data.rankingList.length >= 10){
@@ -1517,12 +1562,12 @@ function rankingList(){
                             document.getElementById("rankNull").style.display = "none";
                             for (var i = 0; i < num2; i++) {
                                 n1 = i+1;
-                                var list = ' <li><span class="order o_'+i+'">'+n1+'</span><span class="name">'+data.data.rankingList[i].cNickName+'</span><span class="coin">红包：'+data.data.rankingList[i].score+'个</span><span>'+data.data.rankingList[i].aGameTimeKey+'</span></li>';
+                                var list = ' <li><span class="order oa_'+i+'">'+n1+'</span><span class="name">'+data.data.rankingList[i].cNickName+'</span><span class="coin">红包：'+data.data.rankingList[i].score+'个</span><span>'+data.data.rankingList[i].aGameTimeKey+'</span></li>';
                                 $("#rank").append(list);
                             }
-                            $(".o_0").addClass('icon first')
-                            $(".o_1").addClass('icon two')
-                            $(".o_2").addClass('icon three')
+                            $(".oa_0").addClass('icon first')
+                            $(".oa_1").addClass('icon two')
+                            $(".oa_2").addClass('icon three')
                         }else{
                             document.getElementById("rankNull").style.display = "block";
                         }
@@ -1532,12 +1577,12 @@ function rankingList(){
                             document.getElementById("exemptionNull").style.display = "none";
                             for (var i = 0; i < num3; i++) {
                                 n3 = i+1;
-                                var list = ' <li><span class="order o_'+i+'">'+n3+'</span><span class="name">'+data.data.freeList[i].cNickName+'</span><span class="coin">红包：'+data.data.freeList[i].score+'个</span><span>'+data.data.freeList[i].aGameTimeKey+'</span></li>';
+                                var list = ' <li><span class="order ob_'+i+'">'+n3+'</span><span class="name">'+data.data.freeList[i].cNickName+'</span><span class="coin">红包：'+data.data.freeList[i].score+'个</span><span>'+data.data.freeList[i].aGameTimeKey+'</span></li>';
                                 $("#exemption_rank").append(list);
                             }
-                            $(".o_0").addClass('icon first')
-                            $(".o_1").addClass('icon two')
-                            $(".o_2").addClass('icon three')
+                            $(".ob_0").addClass('icon first')
+                            $(".ob_1").addClass('icon two')
+                            $(".ob_2").addClass('icon three')
                         }else{
                             document.getElementById("exemptionNull").style.display = "block";
                         }
