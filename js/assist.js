@@ -18,7 +18,7 @@ function hasLogin(needQQ,fresh,ifFirst) {
                 if(ifFirst){
                     showPage(true,false);
                 }else{
-                    showPage(false,false);
+                    showPage(false,true);
                 }
             }
         } else {
@@ -137,7 +137,7 @@ function hasLogin(needQQ,fresh,ifFirst) {
                     if(ifFirst){
                         showPage(true,false);
                     }else{
-                        showPage(false,false);
+                        showPage(false,true);
                     }
                 }
             }, function(error) { console.log(error); });

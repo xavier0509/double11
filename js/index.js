@@ -18,23 +18,27 @@ var app = {
             click_login = false;
             jr_loginChange = false;
             sentLog("landing_result",'{"last_page_name":"排行榜页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录成功"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面', '登录成功', '', '']);
             hasLogin(needQQ,"ranking",false);
         }else if(click_login){
             click_login = false;
             jr_loginChange = false;
             sentLog("landing_result",'{"last_page_name":"排行榜页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录失败"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面', '登录失败', '', '']);
         }
 
         if(jr_loginClick&&jr_loginChange){
             jr_loginClick = false;
             jr_loginChange = false;
             sentLog("landing_result",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录成功"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '免单页面', '登录成功', '', '']);
             fromFreeAndFresh = true;
             hasLogin(needQQ,false,false);
         }else if(jr_loginClick){
             jr_loginClick = false;
             jr_loginChange = false;
             sentLog("landing_result",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街","landing_result":"登录失败"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '免单页面', '登录失败', '', '']);
         }else{
 
         }
@@ -285,8 +289,10 @@ function listenPay() {
         console.log("xjr----------->startpurcharse message  支付结果 " + JSON.stringify(message));
         if (message.presultstatus == 0) {//支付完成~~~~~~
             sentLog("free_wares_pay_succsse",'{"page_name":"免单专区页面","activity_name":"双十一活动--购物街","product_name":"'+rememberGood+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '支付成功'+rememberGood, '', '', '']);
         }else{
             sentLog("nalm_buy_for_view_card_pay_result",'{"pay_result":"0"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '支付失败', '', '', '']);
         }
     });
 }
@@ -365,15 +371,18 @@ function initBtn() {
     $("#rule").unbind("itemClick").bind("itemClick",function () {
         if(gameStatus == "start"){page_type = "游戏进行中"}
         sentLog("shopping_mall_page_button_click",'{"button_name":"游戏规则","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面', '游戏规则点击', '', '']);
         $("#mainbox").hide();
         $("#rulePage").show();
         sentLog("free_wares_page_show",'{"page_name":"活动规则","activity_name":"双十一活动--购物街"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '活动规则曝光', '', '', '']);
         map = new coocaakeymap($("#ruleInner"),null, "btnFocus", function() {}, function(val) {}, function(obj) {});
     })
 
     $("#myaward").unbind("itemClick").bind("itemClick",function () {
         if(gameStatus == "start"){page_type = "游戏进行中"}
         sentLog("shopping_mall_page_button_click",'{"button_name":"我的奖励","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面', '我的奖励点击', '', '']);
         resumeAndFresh = true;
         coocaaosapi.startNewBrowser2(awardurl,function(){},function(){});
     })
@@ -381,9 +390,11 @@ function initBtn() {
     $("#freeList").unbind("itemClick").bind("itemClick",function () {
         if(gameStatus == "start"){page_type = "游戏进行中"}
         sentLog("shopping_mall_page_button_click",'{"button_name":"免单专区入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面', '免单专区入口点击', '', '']);
         $("#mainbox").hide();
         $("#freePage").show();
         sentLog("free_wares_page_show",'{"page_name":"免单专区页面","activity_name":"双十一活动--购物街"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '免单专区页面曝光', '', '', '']);
         $(".freshList").html("");
         $("#freeDiv").css("transform", "translate3D(0, -0px, 0)");
         if(countDay >= 9){
@@ -442,6 +453,7 @@ function initBtn() {
             var _this = this;
             rememberGood = $(_this).attr("pagename");
             sentLog("free_wares_click",'{"product_name":"'+$(_this).attr("pagename")+'","page_name":"免单专区页面","activity_name":"双十一活动--购物街"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '免单专区',$(_this).attr("pagename")+'点击', '', '']);
             if($(this).attr("pageType") == "1"){
                 coocaaosapi.startAppShopDetail($(this).attr("pageid"),function(){},function(){});
             }else{
@@ -450,6 +462,7 @@ function initBtn() {
                 }else{
                     jr_loginClick = true;
                     sentLog("landing_page_show",'{"last_page_name":"免单页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街"}');
+                    _czc.push(['_trackEvent', '双十一活动--购物街', '免单页面','登录弹窗', '', '']);
                     startLogin(needQQ);
                 }
             }
@@ -464,19 +477,23 @@ function initBtn() {
         if(rank_to_game == "again"){
             rank_to_game = "";
             sentLog("top_list_page_button_click",'{"button_name":"再玩一次","page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面','再玩一次', '', '']);
         }else if(rank_to_game == "start"){
             rank_to_game = "";
             sentLog("top_list_page_button_click",'{"button_name":"开启红包雨","page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面','开启红包雨', '', '']);
         }else if(rank_to_game == "free"){
             rank_to_game = "";
             sentLog("top_list_page_button_click",'{"button_name":"我要赢免单","page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面','我要赢免单', '', '']);
         }else{
             sentLog("shopping_mall_page_button_click",'{"button_name":"游戏入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面','游戏入口', '', '']);
         }
         console.log("++++++++++"+gameVersion);
         if(gameVersion < 101044){
             console.log("+++++++++++++++++"+downToast);
-            $("#msgToast").html("&nbsp&nbsp&nbsp"+downToast+"&nbsp&nbsp&nbsp");
+            $("#msgToast").html("<div>"+downToast+"</div>");
             $("#msgToastBox").show();
             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
             if(downGameFalse){
@@ -505,10 +522,12 @@ function initBtn() {
                                 coocaaosapi.startRedGame(""+gameChance,userKeyIdinit,function(){
                                     console.log("success");
                                     sentLog("money_rain_page_show",'{"page_name":"红包雨游戏页面","activity_name":"双十一活动--购物街"}');
+                                    _czc.push(['_trackEvent', '双十一活动--购物街', '红包雨游戏页面曝光','', '', '']);
                                 },function(err){console.log("--------------openGameError"+err)});
                             }else{
                                 //todo show windown for mission or qrcode
                                 sentLog("get_game_go_on_page_show",'{"page_name":"获取游戏机会弹窗","activity_name":"双十一活动--购物街"}');
+                                _czc.push(['_trackEvent', '双十一活动--购物街', '获取游戏机会弹窗曝光','', '', '']);
                                 $("#nochancebox").show();
                                 $("#blackBg").show();
                                 $("#gotoMissionborder").show();
@@ -524,6 +543,7 @@ function initBtn() {
                                 })
                                 $("#gotoMission").unbind("itemClick").bind("itemClick",function () {
                                     sentLog("get_game_go_on_button_click",'{"button_name":"做任务","page_name":"获取游戏机会弹窗","activity_name":"双十一活动--购物街"}');
+                                    _czc.push(['_trackEvent', '双十一活动--购物街', '获取游戏机会弹窗','做任务点击', '', '']);
                                     if(isTaskOver == taskList.length){
                                         $("#mission2").trigger("itemClick");
                                     }else{
@@ -532,9 +552,11 @@ function initBtn() {
                                 })
                                 $("#helpFriend").unbind("itemClick").bind("itemClick",function () {
                                     sentLog("get_game_go_on_button_click",'{"button_name":"求助好友","page_name":"获取游戏机会弹窗","activity_name":"双十一活动--购物街"}');
+                                    _czc.push(['_trackEvent', '双十一活动--购物街', '获取游戏机会弹窗','求助好友点击', '', '']);
                                     $("#nochancebox").hide();
                                     $("#helpQrcode").show();
                                     sentLog("get_game_go_on_page_show",'{"page_name":"分享二维码弹窗","activity_name":"双十一活动--购物街"}');
+                                    _czc.push(['_trackEvent', '双十一活动--购物街', '分享二维码弹窗曝光','', '', '']);
                                     $("#qrcodeBox").html("");
                                     var qrcode = new QRCode(document.getElementById("qrcodeBox"),{width:200,height:200,correctLevel: 3});
                                     qrcode.makeCode(helpurl+"?activeId="+actionId+"&macAddress="+macAddress+"&emmcId="+emmcId+"&cUDID="+activityId+"&cOpenId="+cOpenId);
@@ -543,18 +565,18 @@ function initBtn() {
                             }
                         }else{
                             if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
-                                $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+                                $("#msgToast").html("<div>本次活动已结束，快去“我的奖励”页面查看你的战利品吧</div>");
                             }else{
-                                $("#msgToast").html("&nbsp&nbsp&nbsp抱歉，游戏未开始~可先做任务提前累积游戏机会哦&nbsp&nbsp&nbsp");
+                                $("#msgToast").html("<div>抱歉，游戏未开始~可先做任务提前累积游戏机会哦</div>");
                             }
                             $("#msgToastBox").show();
                             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
                         }
                     } else{
                         if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
-                            $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+                            $("#msgToast").html("<div>本次活动已结束，快去“我的奖励”页面查看你的战利品吧</div>");
                         }else{
-                            $("#msgToast").html("&nbsp&nbsp&nbsp抱歉，游戏未开始~可先做任务提前累积游戏机会哦&nbsp&nbsp&nbsp");
+                            $("#msgToast").html("<div>抱歉，游戏未开始~可先做任务提前累积游戏机会哦</div>");
                         }
                         $("#msgToastBox").show();
                         setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
@@ -585,16 +607,13 @@ function initBtn() {
     })
     $("#mission1").unbind("itemClick").bind("itemClick",function () {
         if(clickFast){
-            setTimeout(setClickFast,5000);
             return;
         }else {
             clickFast = true;
         }
-        function setClickFast() {
-            clickFast = false;
-        }
+
         if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
-            $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+            $("#msgToast").html("<div>本次活动已结束，快去“我的奖励”页面查看你的战利品吧</div>");
             $("#msgToastBox").show();
             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
             return;
@@ -607,27 +626,27 @@ function initBtn() {
             {
                 case "movieDetail"://影视详情页
                     var pageid = $(obj).attr("pageid");
-                    coocaaosapi.startMovieDetail(pageid,function(){},function(){});
+                    coocaaosapi.startMovieDetail(pageid,function(){clickFast = false;},function(){});
                     break;
                 case "layout"://版面
                     var pageid = $(obj).attr("pageid");
-                    coocaaosapi.startHomeCommonList(pageid,function(msg){exit()},function(error){});
+                    coocaaosapi.startHomeCommonList(pageid,function(msg){clickFast = false;exit()},function(error){});
                     break;
                 case "eduEquity"://产品包页面
                     var pageid = $(obj).attr("pageid");
-                    coocaaosapi.startMovieMemberCenter("1",pageid,function(){},function(){});
+                    coocaaosapi.startMovieMemberCenter("1",pageid,function(){clickFast = false;},function(){});
                     break;
                 case "movieEquity"://产品包页面
                     var pageid = $(obj).attr("pageid");
-                    coocaaosapi.startMovieMemberCenter("0",pageid,function(){},function(){});
+                    coocaaosapi.startMovieMemberCenter("0",pageid,function(){clickFast = false;},function(){});
                     break;
                 case "tvmallTopic"://购物专题
                     var pageid = $(obj).attr("pageid");
-                    coocaaosapi.startAppShopZone2(pageid,function(){},function(){});
+                    coocaaosapi.startAppShopZone2(pageid,function(){clickFast = false;},function(){});
                     break;
                 case "movieTopic"://影视专题
                     var pageid = $(obj).attr("pageid");
-                    coocaaosapi.startMovieSomePage(pageid,function(){},function(){});
+                    coocaaosapi.startMovieSomePage(pageid,function(){clickFast = false;},function(){});
                     break;
             }
         }
@@ -636,16 +655,20 @@ function initBtn() {
         if(rank_to_tast == "true"){
             rank_to_tast = "false";
             sentLog("top_list_page_button_click",'{"button_name":"做任务","page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面'+page_type,'做任务', '', '']);
         }else{
             sentLog("shopping_mall_page_button_click",'{"button_type":"'+$(_this).attr("taskname")+'","button_name":"任务一","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面'+page_type,'任务一'+$(_this).attr("taskname"), '', '']);
         }
 
         console.log("--------"+_this);
         if(isTaskOver == taskList.length){
             sentLog("shopping_mall_taskone_result",'{"button_type":"'+$(_this).attr("taskname")+'","task_result":"任务一完成","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '任务一完成'+page_type,'任务一'+$(_this).attr("taskname"), '', '']);
             startMission1(_this);
         }else{
             sentLog("shopping_mall_taskone_result",'{"button_type":"'+$(_this).attr("taskname")+'","task_result":"任务一未完成","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '任务一未完成'+page_type,'任务一'+$(_this).attr("taskname"), '', '']);
             $.ajax({
                 type: "post",
                 async: true,
@@ -655,7 +678,14 @@ function initBtn() {
                 success: function(data) {
                     console.log("------------accChance----result-------------"+JSON.stringify(data));
                     if (data.code == 50100) {
-                        startMission1(_this);
+                        $("#msgToast").html("<div>跳转浏览指定页面回到活动主页面即可增加<span>1</span>次游戏机会哦~</div>");
+                        $("#msgToastBox").show();
+                        setTimeout(gotomission1, 5000);
+                        function gotomission1() {
+                            // clickFast = false;
+                            document.getElementById('msgToastBox').style.display = 'none';
+                            startMission1(_this);
+                        }
                     } else{
                         startMission1(_this);
                     }
@@ -672,19 +702,27 @@ function initBtn() {
         if(rank_to_tast == "true"){
             rank_to_tast = "false";
             sentLog("top_list_page_button_click",'{"button_name":"做任务","page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面'+page_type,'做任务', '', '']);
         }else{
             sentLog("shopping_mall_page_button_click",'{"button_name":"任务二","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面'+page_type,'任务二', '', '']);
         }
         var _this = this;
         if(actionStatus == "end"|| (timePart.nextTimePart == null&& !timePart.ifStart)){
-            $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+            $("#msgToast").html("<div>本次活动已结束，快去“我的奖励”页面查看你的战利品吧</div>");
             $("#msgToastBox").show();
             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
         }else{
-            if(movieSource == "tencent"){
-                coocaaosapi.startMovieHomeSpecialTopic("102829",function(msg){exit()},function(error){});
-            }else{
-                coocaaosapi.startMovieHomeSpecialTopic("102830",function(msg){exit()},function(error){});
+            $("#msgToast").html("<div>正在前往福利场，付费满50元回到活动主页面可增加<span>5</span>次游戏机会哦！</div>");
+            $("#msgToastBox").show();
+            setTimeout(gotomission2, 5000);
+            function gotomission2() {
+                document.getElementById('msgToastBox').style.display = 'none';
+                if(movieSource == "tencent"){
+                    coocaaosapi.startMovieHomeSpecialTopic("102829",function(msg){exit()},function(error){});
+                }else{
+                    coocaaosapi.startMovieHomeSpecialTopic("102830",function(msg){exit()},function(error){});
+                }
             }
         }
     })
@@ -731,6 +769,7 @@ function initBtn() {
         block_name = $(_this).attr("missionname");
         if(gameStatus == "start"){page_type = "游戏进行中"};
         sentLog("shopping_mall_page_button_click",'{"block_bussiness_type":"'+block_bussiness_type+'","block_order":"'+block_order+'","block_name":"'+block_name+'","button_name":"各业务入口","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面'+page_type,block_bussiness_type+block_order+block_name, '', '']);
         // console.log("------------startOperate-------- "+$(_this).attr("missionparam")+"========"+JSON.parse($(_this).attr("missionparam")).params);
         startOperate(_this);
     })
@@ -739,6 +778,7 @@ function initBtn() {
     $("#login_btn").unbind("itemClick").bind("itemClick",function () {
         click_login = true;
         sentLog("top_list_page_button_click",'{"button_name":"立即登录","page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面'+page_type,'立即登录', '', '']);
         startLogin(needQQ)
     })
 
@@ -754,9 +794,10 @@ function initBtn() {
     $("#awardlist").unbind("itemClick").bind("itemClick",function () {
         if(gameStatus == "start"){page_type = "游戏进行中"}
         sentLog("shopping_mall_page_button_click",'{"button_name":"排行榜、免单榜","page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"'+page_type+'"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面'+page_type,'排行榜、免单榜点击', '', '']);
 
         if(actionStatus == "end" || (timePart.nextTimePart == null&& !timePart.ifStart)){
-            $("#msgToast").html("&nbsp&nbsp&nbsp本次活动已结束，快去“我的奖励”页面查看你的战利品吧&nbsp&nbsp&nbsp");
+            $("#msgToast").html("<div>本次活动已结束，快去“我的奖励”页面查看你的战利品吧</div>");
             $("#msgToastBox").show();
             setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
         }else{
@@ -941,6 +982,7 @@ function initGameStatus(resume) {
             if(sentMainpageLog){
                 sentMainpageLog = false;
                 sentLog("shopping_mall_page_show",'{"page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"游戏进行中"}');
+                _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面游戏进行中曝光','', '', '']);
             }
             $("#waitgame").hide();
             $("#gameing").show();
@@ -980,28 +1022,51 @@ function initGameStatus(resume) {
                     console.log("------------todayAward----result-------------"+JSON.stringify(data));
                     if (data.code == 50100) {
                         $("#todayawardul").html("");
-                        var listlength = data.data.awardNews.length;
                         var box = document.getElementById("todayawardul");
-                        var maxwidth=4;
-                        var maxwidth1=6;
-                        for(var i=0;i<listlength;i++){
-                            if(data.data.awardNews[i].cNickName == null || data.data.awardNews[i].cNickName == ""){
-                                cNickName = "匿名用户";
-                            }else{
-                                cNickName = data.data.awardNews[i].cNickName;
 
-                                 if(cNickName.length>maxwidth){
-                                    cNickName = cNickName.substring(0,maxwidth);
-                                    cNickName = cNickName + '...';
+                        var listlength = data.data.awardNews.length;
+                        var recordlength = data.data.gameRecords.length;
+                        var pushNum = listlength>recordlength?listlength:recordlength;
+                        var pushArr = [];
+                        var maxwidth=6;
+                        var maxwidth1=6;
+                        for(var a=0;a<pushNum;a++){
+                            if(data.data.awardNews[a]!=undefined){
+                                if(data.data.awardNews[a].cNickName == null || data.data.awardNews[a].cNickName == ""){
+                                    cNickName = "匿名用户";
+                                }else{
+                                    cNickName = data.data.awardNews[a].cNickName;
+
+                                    if(cNickName.length>maxwidth){
+                                        cNickName = cNickName.substring(0,maxwidth);
+                                        cNickName = cNickName + '...';
+                                    }
                                 }
+                                awardName = data.data.awardNews[a].awardName;
+                                if(awardName.length>maxwidth1){
+                                    awardName = awardName.substring(0,maxwidth1);
+                                    awardName = awardName + '...';
+                                }
+                                pushArr.push(cNickName+"  获得  "+awardName);
                             }
-                            awardName = data.data.awardNews[i].awardName;
-                            if(awardName.length>maxwidth1){
-                                awardName = awardName.substring(0,maxwidth1);
-                                awardName = awardName + '...';
+                            if(data.data.gameRecords[a]!=undefined){
+                                if(data.data.gameRecords[a].cNickName == null || data.data.gameRecords[a].cNickName == ""){
+                                    cNickName = "匿名用户";
+                                }else{
+                                    cNickName = data.data.gameRecords[a].cNickName;
+
+                                    if(cNickName.length>maxwidth){
+                                        cNickName = cNickName.substring(0,maxwidth);
+                                        cNickName = cNickName + '...';
+                                    }
+                                }
+                                score = data.data.gameRecords[a].score;
+                                pushArr.push(cNickName+"  在游戏中获得  "+score+"个红包");
                             }
+                        }
+                        for(var i=0;i<pushArr.length;i++){
                             var list = document.createElement("li");
-                            list.innerHTML=cNickName+"&nbsp;&nbsp;获得&nbsp;&nbsp;"+awardName;
+                            list.innerHTML=pushArr[i];
                             box.appendChild(list);
                         }
                         showAwardlist("#todaymarquee","#todayawardul",setInterv1);
@@ -1032,6 +1097,7 @@ function initGameStatus(resume) {
                 if(sentMainpageLog){
                     sentMainpageLog = false;
                     sentLog("shopping_mall_page_show",'{"page_name":"活动主页面","activity_name":"双十一活动--购物街","page_type":"游戏未开始"}');
+                    _czc.push(['_trackEvent', '双十一活动--购物街', '活动主页面游戏未开始曝光','', '', '']);
                 }
                 $("#waitgame").show();
                 $("#gameing").hide();
@@ -1167,7 +1233,7 @@ function initGameStatus(resume) {
             if(getUrlParam("from")!=null&&getUrlParam("from")!=undefined&&!resume){
                 initMap("#list1 .module:eq(0)");
                 $("#mainbox").css("transform", "translate3D(0, -270px, 0)");
-            }else if(gameStatus == "start"){
+            }else if(gameStatus == "start" && gameChance > 0){
                 initMap("#gameing");
             }else {
                 if(actionStatus == "end"){
@@ -1204,7 +1270,7 @@ function initGameStatus(resume) {
                showcoupon(showMovie,"movie");
                function showcoupon(name,type) {
                    if(name!=""&&name!=null){
-                       $("[bannerType="+type+"] .module1 .coupon").html("<span class='konw'>已获<span class='couponname'>"+name+"</span>优惠券,可马上使用</span>").addClass('zy_coupon');
+                       $("[bannerType="+type+"] .module1 .coupon").html("<div class='konw'>已获<span class='couponname'>"+name+"</span>优惠券,可马上使用</div>").addClass('zy_coupon');
                    }
                }
             }
@@ -1268,7 +1334,7 @@ function showPage(first,resume) {
                     zy_endTime = new Date(timePart.nextTimePart.endTime).getHours();//===================zy
                 }
                 if(gameResult.packageNumberNew>0){
-                    $("#msgToast").html("&nbsp&nbsp&nbsp通过任务二获得"+gameResult.packageNumberNew+"次机会&nbsp&nbsp&nbsp");
+                    $("#msgToast").html("<div>通过任务二获得"+gameResult.packageNumberNew+"次机会</div>");
                     $("#msgToastBox").show();
                     setTimeout("document.getElementById('msgToastBox').style.display = 'none'", 3000);
                 }else{}
@@ -1287,8 +1353,8 @@ function showPage(first,resume) {
                     $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner3.png")')
                 }else{
                     $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner2.png")')
-                    $("#gameing").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/gameingbanner.jpg")')
-                    $("#waitgame").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/waitbanner.jpg")')
+                    $("#gameing").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newgameingbanner.jpg")')
+                    $("#waitgame").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newwaitbanner.jpg")')
                     $("#opacityBg2").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacityw.png")')
                     $("#opacityBg1").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacitying.png")')
                 }
@@ -1410,6 +1476,7 @@ function rankingList(){
     document.getElementById("mainbox").style.display = "none";
     if(countDay == 1 && pastTimePart == null && rankifStart == false){//第一天第一场游戏还未开始
         sentLog("top_list_page_show",'{"page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"游戏未开始"}');
+        _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面游戏未开始曝光','', '', '']);
         document.getElementById("notBegin").style.display = "block";
         document.getElementById("begin").style.display = "none";
         document.getElementById("double11").style.display = "none";
@@ -1418,8 +1485,10 @@ function rankingList(){
     }else{
         if(rankifStart == false){
             sentLog("top_list_page_show",'{"page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"游戏未开始"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面游戏未开始曝光','', '', '']);
         }else{
             sentLog("top_list_page_show",'{"page_name":"排行榜页面","activity_name":"双十一活动--购物街","page_type":"游戏进行中"}');
+            _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面游戏进行中曝光','', '', '']);
         }
         if(double11 == true){
             document.getElementById("begin").style.display = "none";
@@ -1598,6 +1667,7 @@ function rankingList(){
                 if(loginstatus == "false"){
                     document.getElementById("login_Get").style.display = "inline-block";
                     sentLog("landing_page_show",'{"last_page_name":"排行榜页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街"}');
+                    _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面','双十一登录弹窗', '', '']);
                 }else{
                     document.getElementById("login_Get").style.display = "none";
                 }
@@ -1608,10 +1678,11 @@ function rankingList(){
                     $(".foot2").html("◎ 登录后成绩才能计入榜单哦~请马上登录~ ◎");
                     document.getElementById("login_Get").style.display = "inline-block";
                     sentLog("landing_page_show",'{"last_page_name":"排行榜页面","page_name":"双十一登录弹窗","activity_name":"双十一活动--购物街"}');
+                    _czc.push(['_trackEvent', '双十一活动--购物街', '排行榜页面','双十一登录弹窗', '', '']);
                 }else{
                     document.getElementById("user_td_rank").style.display = "inline-block";
                     document.getElementById("user_td_red").style.display = "inline-block";
-                    if(rankingArea == 2){//排名是否在100以内
+                    if(rankingArea == 2 || rankingArea == 1 || rankingArea == 0){//排名是否在100以内
                         $(".rank_todaylistnum").html(userRanking);
                     }else{
                         $(".rank_todaylistnum").html("100+");

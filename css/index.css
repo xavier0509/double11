@@ -92,7 +92,7 @@ body {
 }
 #myaward{
     right: 316px;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/myaward.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newmyaward.png");
 }
 #rule{
     right: 88px;
@@ -100,7 +100,7 @@ body {
 }
 #myaward.btnFocus{
     right: 316px;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/myawardf.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newmyawardf.png");
 }
 #rule.btnFocus{
     right: 88px;
@@ -176,7 +176,7 @@ body {
 #gameing{
     display: none;
     height:483px;
-    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiing.jpg");
+    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newhiing.jpg");
     /*background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/gameingbanner.jpg");*/
     /*padding: 4px;*/
 }
@@ -193,7 +193,7 @@ body {
     margin: auto;
     color: #870404;
     padding: 4px;
-    border-radius: 38px;
+    border-radius: 32px;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/startbtn.png");
 }
 #endbtn{
@@ -213,8 +213,8 @@ body {
     width: 374px;
     height:96px;
     border: 4px solid white;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/startbtnf.png");
-    color: #ffc833;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newstartbtnf.png");
+    color: #cc0000;
 }
 #startbtn span{
     display: block;
@@ -420,25 +420,25 @@ body {
     bottom:4px;
     right:4px;
     font-size: 20px;
+    width: 353px;
+    height: 59px;
+    line-height: 59px;
     color: white;
 }
 .zy_coupon{
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/rule/banner_bg123.png");
-    width: 353px;
-    height: 59px;
-    line-height: 59px;
-    text-align: right;
 }
-/*.konw{*/
-    /*display: inline-block;*/
-    /*width: 333px;*/
-    /*text-align: left;*/
-    /*margin-left: 20px;*/
+.konw{
+    position: absolute;
+    width: 313px;
+    text-align: center;
+    left:40px;
     /*border: 1px solid blue;*/
-/*}*/
+}
 .couponname{
     color: #fff83d;
     font-weight: bold;
+    font-size: 30px;
 }
 #rulePage{
     width:1920px;
@@ -460,7 +460,7 @@ body {
     width:1920px;
     height:1080px;
     overflow: hidden;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/newfreebg.jpg");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/newnewfreebg.jpg");
     display: none;
 }
 .fbtn,.fbtnfocus{
@@ -579,17 +579,35 @@ body {
 }
 #msgToastBox{
     width: 1920px;
-    height: 100px;
+    height: 260px;
     text-align: center;
     position: absolute;
-    top:930px;
-    font-size: 30px;
+    top:416px;
+    font-size: 38px;
+    color: #ffffff;
 }
 #msgToast{
     background: white;
     display: inline-block;
-    height: 80px;
+    height: 260px;
+    width: 779px;
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/toast.png");
     line-height:80px;
+}
+#msgToast div{
+    width: 618px;
+    line-height: 50px;
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#msgToast div span{
+    font-size: 48px;
+    color: #ffef83;
+    font-weight: bold;
 }
 #rankbox{
     display: none;
@@ -790,16 +808,16 @@ body {
 .foot1 li{
     height: 80px;
     line-height: 80px;
-    font-size: 30px;
+    font-size: 34px;
     color: #fff;
     list-style: none;
     display: inline-block;
-    margin: 0px 120px;
+    margin: 0px 20px;
 }
 
 .foot1 li span{
     color: #ffe825;
-    font-size: 40px;
+    font-size: 50px;
     margin: 0 10px;
 }
 .foot1 .pm{
@@ -821,7 +839,7 @@ body {
     height: 30px;
     line-height: 30px;
     color: #8ffff4;
-    font-size: 26px
+    font-size: 30px
 }
 
 .rank_Get,.again_Get,.login_Get,.start_Get{
