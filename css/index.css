@@ -47,7 +47,7 @@ body {
     position: absolute;
     top: 106px;
     left: 68px;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiingopa.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/normalstart.png");
     /*background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacitying.png");*/
     z-index: -1;
     display: none;
@@ -58,7 +58,7 @@ body {
     position: absolute;
     top: 106px;
     left: 68px;
-    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/hiopacityw.png");
+    background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/normalwait.png");
     /*background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacityw.png");*/
     z-index: -1;
     display: none;
@@ -379,7 +379,7 @@ body {
     left:0px;
 }
 #mission2{
-    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/mission2.png");
+    background:  url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newmission2.png");
 }
 #mainlist{
     width: 1920px;

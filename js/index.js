@@ -499,7 +499,7 @@ function initBtn() {
             if(downGameFalse){
                 downGameFalse = false;
                 appDown.listenApp();
-                appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20180206/20180206103450797932.apk", "98B59D6C52B8BFEA17D250D5D9FF3F1D", "优选购物", "com.coocaa.mall", "26040", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+                appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20181030/20181030114924347482.apk", "1D4CB3A15516FA1A102C4116B3F9A2D1", "红包游戏", "com.coocaa.ie", "101044", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
             }
         }else{
             console.log("+++++++++++已安装最新版游戏");
@@ -1347,16 +1347,14 @@ function showPage(first,resume) {
                 }else{
                     $("#mission1").html(taskList[isTaskOver==taskList.length?isTaskOver-1:isTaskOver].name);
                 }
-                if(countDay < 5 ){
-                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner1.png")')
-                }else if(countDay<9){
-                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner3.png")')
+                if(countDay<9){
+                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/normalfreebanner.png")')
                 }else{
-                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/freebanner2.png")')
+                    $("#freeList").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/specialfreebanner.png")')
                     $("#gameing").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newgameingbanner.jpg")')
                     $("#waitgame").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newwaitbanner.jpg")')
-                    $("#opacityBg2").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacityw.png")')
-                    $("#opacityBg1").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/opacitying.png")')
+                    $("#opacityBg2").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/specialwait.png")')
+                    $("#opacityBg1").css('background','url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/specialstart.png")')
                 }
             } else if(data.code == 50002){
                 actionStatus = "wait";
@@ -1374,82 +1372,85 @@ function showPage(first,resume) {
                     if (data.code == 50100) {
                         $("#awardul").html("");
                         if(countDay == 1 && timePart.pastTimePart == null){
-                            $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/nostartlist.png")');
+                            $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/bang1.png")');
                         }else if(actionStatus == "end"){
-                            $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/nostartlist.png")');
+                            $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/bang5.png")');
                         }
                         else{
-                            $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/mission3.png")');
+                            // $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/mission3.png")');
                             if(data.data.rankingList.length == 0){
                                 console.log("----------------显示免单榜");
-                                $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/miandanbang.png">');
-                                var listlength = data.data.freeList.length;
-                                var box = document.getElementById("awardul");
-                                for(var i=0;i<listlength;i++){
-                                    if(data.data.freeList[i].cNickName == null || data.data.freeList[i].cNickName == ""){
-                                       var free_cNickName = "匿名用户";
-                                    }else{
-                                       var free_cNickName = data.data.freeList[i].cNickName;
-                                    }
-                                    var list = document.createElement("li");
-                                    list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+free_cNickName+'</span><span class="li_s3">'+data.data.freeList[i].score+'个</span>';
-                                    box.appendChild(list);
-                                }
-                                showAwardlist("#awardlist","#awardul",setInterv2);
+                                $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/bang6.png")');
+                                // $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/miandanbang.png">');
+                                // var listlength = data.data.freeList.length;
+                                // var box = document.getElementById("awardul");
+                                // for(var i=0;i<listlength;i++){
+                                //     if(data.data.freeList[i].cNickName == null || data.data.freeList[i].cNickName == ""){
+                                //        var free_cNickName = "匿名用户";
+                                //     }else{
+                                //        var free_cNickName = data.data.freeList[i].cNickName;
+                                //     }
+                                //     var list = document.createElement("li");
+                                //     list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+free_cNickName+'</span><span class="li_s3">'+data.data.freeList[i].score+'个</span>';
+                                //     box.appendChild(list);
+                                // }
+                                // showAwardlist("#awardlist","#awardul",setInterv2);
                             }else{
                                 if(countDay >= 9){
-                                    if(actionStatus == "end"){
-                                        $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/window/todayfreeend123.png">');
-                                    }else{
-                                        $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/window/todayfreeend123.png">');
-                                    }
+                                    // if(actionStatus == "end"){
+                                    //     $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/window/todayfreeend123.png">');
+                                    // }else{
+                                    //     $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/window/todayfreeend123.png">');
+                                    // }
 
-                                    $.ajax({
-                                        type: "get",
-                                        async: true,
-                                        url: adressIp + "/light/eleven/free",
-                                        data: {cNickName:nick_name,activeId:actionId, MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId},
-                                        dataType: "json",
-                                        success: function(data) {
-                                            console.log("------------showFreeDayList----result-------------"+JSON.stringify(data));
-                                            if (data.code == 50100) {
-                                                var listLength = data.data.length;
-                                                var box = document.getElementById("awardul");
-                                                for(var i=0;i<listLength;i++){
-                                                    if(data.data[i].cNickName == null || data.data[i].cNickName == ""){
-                                                        var free_cNickName = "匿名用户";
-                                                    }else{
-                                                        var free_cNickName = data.data[i].cNickName;
-                                                    }
-                                                    var list = document.createElement("li");
-                                                    list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+free_cNickName+'</span><span class="li_s3">免单</span>';
-                                                    box.appendChild(list);
-                                                }
-                                                showAwardlist("#awardlist","#awardul",setInterv2);
-                                            }
-                                            else{}
-                                        },
-                                        error: function(error) {
-                                            console.log("--------访问失败" + JSON.stringify(error));
-                                        }
-                                    });
+                                    // $.ajax({
+                                    //     type: "get",
+                                    //     async: true,
+                                    //     url: adressIp + "/light/eleven/free",
+                                    //     data: {cNickName:nick_name,activeId:actionId, MAC:macAddress,cChip:TVchip,cModel:TVmodel,cEmmcCID:emmcId,cUDID:activityId},
+                                    //     dataType: "json",
+                                    //     success: function(data) {
+                                    //         console.log("------------showFreeDayList----result-------------"+JSON.stringify(data));
+                                    //         if (data.code == 50100) {
+                                    //             var listLength = data.data.length;
+                                    //             var box = document.getElementById("awardul");
+                                    //             for(var i=0;i<listLength;i++){
+                                    //                 if(data.data[i].cNickName == null || data.data[i].cNickName == ""){
+                                    //                     var free_cNickName = "匿名用户";
+                                    //                 }else{
+                                    //                     var free_cNickName = data.data[i].cNickName;
+                                    //                 }
+                                    //                 var list = document.createElement("li");
+                                    //                 list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+free_cNickName+'</span><span class="li_s3">免单</span>';
+                                    //                 box.appendChild(list);
+                                    //             }
+                                    //             showAwardlist("#awardlist","#awardul",setInterv2);
+                                    //         }
+                                    //         else{}
+                                    //     },
+                                    //     error: function(error) {
+                                    //         console.log("--------访问失败" + JSON.stringify(error));
+                                    //     }
+                                    // });
+                                    $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/bang2.png")');
                                 }else{
-                                    console.log("----------------显示排行榜");
-                                    $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newtop10.png">');
-                                    var listlength = data.data.rankingList.length;
-                                    var box = document.getElementById("awardul");
-                                    for(var i=0;i<listlength;i++){
-                                        if(data.data.rankingList[i].cNickName == null || data.data.rankingList[i].cNickName == ""){
-                                            var rank_cNickName = "匿名用户";
-                                        }else{
-                                            var rank_cNickName = data.data.rankingList[i].cNickName;
-                                        }
-                                        var list = document.createElement("li");
-                                        list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+rank_cNickName+'</span><span class="li_s3">'+data.data.rankingList[i].score+'个</span>';
-                                        box.appendChild(list);
-                                    }
+                                    // console.log("----------------显示排行榜");
+                                    // // $("#listDiv .title").html('<img src="http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/newtop10.png">');
+                                    // var listlength = data.data.rankingList.length;
+                                    // var box = document.getElementById("awardul");
+                                    // for(var i=0;i<listlength;i++){
+                                    //     if(data.data.rankingList[i].cNickName == null || data.data.rankingList[i].cNickName == ""){
+                                    //         var rank_cNickName = "匿名用户";
+                                    //     }else{
+                                    //         var rank_cNickName = data.data.rankingList[i].cNickName;
+                                    //     }
+                                    //     var list = document.createElement("li");
+                                    //     list.innerHTML='<span class="li_s1">'+(i+1)+'</span><span class="li_s2">'+rank_cNickName+'</span><span class="li_s3">'+data.data.rankingList[i].score+'个</span>';
+                                    //     box.appendChild(list);
+                                    // }
+                                    $("#awardlist").css('background',' url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/mainpage/bang3.png")');
                                 }
-                                showAwardlist("#awardlist","#awardul",setInterv2);
+                                // showAwardlist("#awardlist","#awardul",setInterv2);
                             }
                             // showAwardlist("#awardlist","#awardul",setInterv2);
                         }
