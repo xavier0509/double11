@@ -232,6 +232,7 @@ body {
     color: #fff;
 }
 #todaymarquee{
+    display: none;
     width: 515px;
     height: 65px;
     position: absolute;
@@ -784,7 +785,7 @@ body {
 .ranking .order{display: inline-block; width: 36px; height: 42px; text-align: center; color: #fff}
 .ranking li{height: 42px; line-height: 42px; margin-bottom: 5px; list-style: none}
 .ranking li span{display: inline-block; float: left; text-align: left; margin-left:42px; color: #b7a4d1 }
-.ranking .name{width: 190px; color: #fff; }
+.ranking .name{width: 190px; color: #fff;  overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
 .ranking .coin{width: 180px;color: #ffef4a;}
 .icon{background-image: url(http://sky.fs.skysrt.com/statics/webvip/webapp/double11/namelist/icon.png); display: inline-block;    font-size: 0px; }
 .first{background-position: 0px 6px;}
@@ -906,7 +907,7 @@ body {
     display: none;
     z-index: 2;
 }
-.move1{
+.move1.showmove{
     width: 157px;
     height: 156px;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/qq.png");
@@ -936,7 +937,7 @@ body {
     75%  {opacity:0.2;top:210px;left:20px;}
     100% {opacity:0.1;top:283px;left:0px;}
 }
-.move2{
+.move2.showmove{
     width: 157px;
     height: 156px;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/qq.png");
@@ -966,7 +967,7 @@ body {
     75%  {opacity:0.2;top:430px;left:318px;}
     100% {opacity:0.1;top:483px;left:297px;}
 }
-.move3{
+.move3.showmove{
     width: 157px;
     height: 156px;
     background: url("http://sky.fs.skysrt.com/statics/webvip/webapp/double11/free/qq.png");

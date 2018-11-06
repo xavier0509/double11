@@ -152,8 +152,16 @@ var app = {
         console.log('Received Event: ' + id);
         if(gameVersion<101044){
             appDown.listenApp();
-            appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20181030/20181030114924347482.apk", "1D4CB3A15516FA1A102C4116B3F9A2D1", "红包游戏", "com.coocaa.ie", "101044", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+            appDown.createDownloadTask("https://apk-sky-fs.skysrt.com/uploads/20181030/20181030114924347482.apk", "1D4CB3A15516FA1A102C4116B3F9A2D1", "红包游戏", "com.coocaa.ies", "101044", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
         }
+        coocaaosapi.getBaseInfo(function (msg) {
+            console.log("-----------baseinfo-------"+JSON.stringify(msg));
+            if(msg.totalMem > 1.1*1024*1024*1024){
+                showMove = true;
+            }
+        },function (err) {
+            console.log("-----------baseinfo-------"+JSON.stringify(err));
+        })
         coocaaosapi.getDeviceInfo(function(message) {
             deviceInfo = message;
             if (deviceInfo.version < '6') {
@@ -235,7 +243,7 @@ var appDown = {
                 waitApkInstallFunc =  setTimeout('appDown.downFail()', 120000);
             } else if (message.status == "ON_STOPPED") {
                 appDown.downFail()
-            } else if (message.status == "ON_REMOVED"&& message.url == "http://apk.sky.fs.skysrt.com/uploads/20181030/20181030114924347482.apk") {
+            } else if (message.status == "ON_REMOVED"&& message.url == "https://apk-sky-fs.skysrt.com/uploads/20181030/20181030114924347482.apk") {
                 clearTimeout(waitApkInstallFunc);
                 var a = '{ "pkgList": ["com.coocaa.ie"] }'
                 coocaaosapi.getAppInfo(a, function(message) {
@@ -400,7 +408,7 @@ function initBtn() {
         if(countDay >= 9){
             $("#specialFree").show();
             var specialbox = document.getElementById("specialList");
-            for(var i=1;i<=8;i++){
+            for(var i=1;i<=10;i++){
                 var pkg = "pkg"+i;
                 var specialli = document.createElement("div");
                 specialli.setAttribute("class","product coocaabtn");
@@ -416,7 +424,7 @@ function initBtn() {
             $("#normalFree").css("top","0");
         }
         var normalbox = document.getElementById("normalList");
-        for(var i=1;i<=8;i++){
+        for(var i=1;i<=10;i++){
             var pkg = "pkg"+i;
             var freelist = null;
             var normalli = document.createElement("div");
@@ -499,7 +507,7 @@ function initBtn() {
             if(downGameFalse){
                 downGameFalse = false;
                 appDown.listenApp();
-                appDown.createDownloadTask("http://apk.sky.fs.skysrt.com/uploads/20181030/20181030114924347482.apk", "1D4CB3A15516FA1A102C4116B3F9A2D1", "红包游戏", "com.coocaa.ie", "101044", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
+                appDown.createDownloadTask("https://apk-sky-fs.skysrt.com/uploads/20181030/20181030114924347482.apk", "1D4CB3A15516FA1A102C4116B3F9A2D1", "红包游戏", "com.coocaa.ies", "101044", "http://img.sky.fs.skysrt.com//uploads/20170415/20170415110115834369.png");
             }
         }else{
             console.log("+++++++++++已安装最新版游戏");
@@ -986,7 +994,12 @@ function initGameStatus(resume) {
             }
             $("#waitgame").hide();
             $("#gameing").show();
-            $("#movebanner").show();
+            if(showMove){
+                $("#movebanner").show();
+                $(".move1").addClass("showmove");
+                $(".move2").addClass("showmove");
+                $(".move3").addClass("showmove");
+            }
             $("#opacityBg1").show();
             $("#opacityBg2").hide();
             beginTime = new Date(timePart.beginTime).getHours();
@@ -1005,7 +1018,7 @@ function initGameStatus(resume) {
 
             if(loginstatus == "true" && gameResult.todayMaxScore > 0){
                 $(".todaylistnum").show();
-                if(gameResult.userRanking <= 100){
+                if(gameResult.userRanking <= 100&&gameResult.userRanking>0){
                     $(".todaylistnum").html("排名："+gameResult.userRanking);
                 }else{
                     $(".todaylistnum").html("排名：100+");
@@ -1069,7 +1082,10 @@ function initGameStatus(resume) {
                             list.innerHTML=pushArr[i];
                             box.appendChild(list);
                         }
-                        showAwardlist("#todaymarquee","#todayawardul",setInterv1);
+                        if(showMove){
+                            $("#todaymarquee").show();
+                            showAwardlist("#todaymarquee","#todayawardul",setInterv1);
+                        }
                     }
                     else{}
                 },
@@ -1108,7 +1124,7 @@ function initGameStatus(resume) {
                 $("#waitBest span").html(gameResult.todayMaxScore);
                 if(loginstatus == "true" && gameResult.todayMaxScore > 0 ){
                     $("#waitTop").show();
-                    if(gameResult.userRanking < 100){
+                    if(gameResult.userRanking <= 100&&gameResult.userRanking>0){
                         $("#waitTop span").html(gameResult.userRanking)
                     }else{
                         $("#waitTop span").html("100+")
