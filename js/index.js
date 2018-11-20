@@ -405,8 +405,9 @@ function initBtn() {
         _czc.push(['_trackEvent', '双十一活动--购物街', '免单专区页面曝光', '', '', '']);
         $(".freshList").html("");
         $("#freeDiv").css("transform", "translate3D(0, -0px, 0)");
-        if(countDay >= 9){
+        if(true){
             $("#specialFree").show();
+            $("#normalFree").hide();
             var specialbox = document.getElementById("specialList");
             for(var i=1;i<=10;i++){
                 var pkg = "pkg"+i;
@@ -1005,7 +1006,8 @@ function initGameStatus(resume) {
             beginTime = new Date(timePart.beginTime).getHours();
             endTime = new Date(timePart.endTime).getHours();
             $("#gameing .gametime").html("本场游戏时间："+beginTime+":00--"+endTime+":00");
-            $("#startbtn span").html(gameResult.chance);
+            // $("#startbtn span").html(gameResult.chance);
+            $("#startbtn span").html("99+");
             if(double11 == false){
                 if(zy_todayMaxScore != 0){
                     document.getElementById("todayrecord").style.display = "block";
@@ -1120,7 +1122,8 @@ function initGameStatus(resume) {
                 $("#movebanner").hide();
                 $("#opacityBg2").show();
                 $("#opacityBg1").hide();
-                $("#waitOvertimes span").html(gameResult.chance);
+                // $("#waitOvertimes span").html(gameResult.chance);
+                $("#waitOvertimes span").html("99+");
                 $("#waitBest span").html(gameResult.todayMaxScore);
                 if(loginstatus == "true" && gameResult.todayMaxScore > 0 ){
                     $("#waitTop").show();

@@ -183,10 +183,10 @@ body {
 #startbtn{
     width: 366px;
     height:88px;
-    font-size: 26px;
+    font-size: 20px;
     line-height: 96px;
     position: absolute;
-    top:328px;
+    top:330px;
     left:0;
     right:0;
     text-align: center;
@@ -503,7 +503,7 @@ body {
  }
 #specialFree{
     position: relative;
-    /*top:50px;*/
+    top:50px;
     color: #ffffff;
     font-size: 52px;
     line-height: 52px;

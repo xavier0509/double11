@@ -53,12 +53,12 @@ var zy_todayMaxScore = 0;
 
 var showMove = false;
 
-// var adressIp = "http://beta.restful.lottery.coocaatv.com";
-// var orderUrl = "http://172.20.132.182:8090/v3/order/genOrderByJsonp.html?data=";
-// var actionId = "153";
-var adressIp = "https://restful.skysrt.com";
-var orderUrl = "https://api-business.skysrt.com/v3/order/genOrderByJsonp.html?data=";
-var actionId = "80";
+var adressIp = "http://beta.restful.lottery.coocaatv.com";
+var orderUrl = "http://172.20.132.182:8090/v3/order/genOrderByJsonp.html?data=";
+var actionId = "153";
+// var adressIp = "https://restful.skysrt.com";
+// var orderUrl = "https://api-business.skysrt.com/v3/order/genOrderByJsonp.html?data=";
+// var actionId = "80";
 
 
 //普通场奇异
@@ -114,11 +114,11 @@ var setInterv1 = null;
 var setInterv2 = null;
 var userKeyIdinit = null;
 
-// var awardurl = "https://beta.webapp.skysrt.com/games/webapp/double11/example/index.html?part=award";
-// var helpurl = "http://beta.webapp.skysrt.com/games/webapp/double11/address/help.html";
+var awardurl = "https://beta.webapp.skysrt.com/games/webapp/double11/example/index.html?part=award";
+var helpurl = "http://beta.webapp.skysrt.com/games/webapp/double11/address/help.html";
 
-var awardurl = "https://webapp.skysrt.com/games/double11/example/index.html?part=award";
-var helpurl = "https://webapp.skysrt.com/games/double11/address/help.html";
+// var awardurl = "https://webapp.skysrt.com/games/double11/example/index.html?part=award";
+// var helpurl = "https://webapp.skysrt.com/games/double11/address/help.html";
 
 var sentMainpageLog = false;
 var page_type = "游戏未开始";
